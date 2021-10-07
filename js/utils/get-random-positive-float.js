@@ -22,3 +22,5 @@ function getRandomPositiveFloat (start, end, digits = 1) {
 }
 
 getRandomPositiveFloat(1.2,2.2);
+
+export {getRandomPositiveFloat};
