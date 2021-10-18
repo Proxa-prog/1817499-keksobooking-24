@@ -41,7 +41,10 @@ const createAd = () => {
   const locationlng = getRandomPositiveFloat(139.70000, 139.80000, 5);
 
   return {
-    author: createAuthor(),
+    author: {
+      au: createAuthor()
+    },
+
     offer: {
       title: TITLE[getRandomPositiveInteger(0, TITLE.length - 1)],
       address: String(`${locationlat}, ${locationlng}`),
