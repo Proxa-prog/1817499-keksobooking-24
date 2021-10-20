@@ -1,5 +1,4 @@
 import {TYPE_OF_HOUSING_RUS, TYPE_OF_HOUSING} from './arrays-and-variables.js';
-import {createArrayAd} from './main.js';
 
 const templateCard = document.querySelector('#card').content.querySelector('.popup');
 const mapCanvas = document.querySelector('.map__canvas');
@@ -11,8 +10,8 @@ const itemHide = (item) => {
   }
 };
 
-const createNewAnnouncementElement = () => {
-  createArrayAd.forEach((item) => {
+const createNewAnnouncementElement = (Array) => {
+  Array.forEach((item) => {
     const announcementElement = templateCard.cloneNode(true);
     mapCanvas.appendChild(announcementElement);
 
@@ -28,16 +27,13 @@ const createNewAnnouncementElement = () => {
     address.textContent = item.offer.address;
     itemHide(address);
 
-
     const price = announcementElement.querySelector('.popup__text--price');
     price.textContent = `${item.offer.price} ₽/ночь`;
     itemHide(price);
 
-
     const capacity = announcementElement.querySelector('.popup__text--capacity');
     capacity.textContent = `${item.offer.rooms} комнаты для ${item.offer.guests} гостей`;
     itemHide(capacity);
-
 
     const time = announcementElement.querySelector('.popup__text--time');
     time.textContent = `Заезд после ${item.offer.checkin}, выезд до ${item.offer.checkout}`;
