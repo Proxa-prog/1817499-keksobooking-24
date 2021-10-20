@@ -16,46 +16,46 @@ const createNewAnnouncementElement = () => {
     const announcementElement = templateCard.cloneNode(true);
     mapCanvas.appendChild(announcementElement);
 
-    let author = announcementElement.querySelector('.popup__avatar');
+    const author = announcementElement.querySelector('.popup__avatar');
     author.src = item.author;
     itemHide(author);
 
-    let title = announcementElement.querySelector('.popup__title');
+    const title = announcementElement.querySelector('.popup__title');
     title.textContent = item.offer.title;
     itemHide(title);
 
-    let address = announcementElement.querySelector('.popup__text--address');
+    const address = announcementElement.querySelector('.popup__text--address');
     address.textContent = item.offer.address;
     itemHide(address);
 
 
-    let price = announcementElement.querySelector('.popup__text--price');
-    price.textContent = item.offer.price + ' ₽/ночь'; // линтер ругается на конкатенацию
+    const price = announcementElement.querySelector('.popup__text--price');
+    price.textContent = `${item.offer.price} ₽/ночь`;
     itemHide(price);
 
 
-    let capacity = announcementElement.querySelector('.popup__text--capacity');
-    capacity.textContent = item.offer.rooms + ' комнаты для ' + item.offer.guests + ' гостей'; // линтер ругается на конкатенацию
+    const capacity = announcementElement.querySelector('.popup__text--capacity');
+    capacity.textContent = `${item.offer.rooms} комнаты для ${item.offer.guests} гостей`;
     itemHide(capacity);
 
 
-    let time = announcementElement.querySelector('.popup__text--time');
-    time.textContent = 'Заезд после' + item.offer.checkin + ', выезд до' + item.offer.checkout; // линтер ругается на конкатенацию
+    const time = announcementElement.querySelector('.popup__text--time');
+    time.textContent = `Заезд после ${item.offer.checkin}, выезд до ${item.offer.checkout}`;
     itemHide(time);
 
-    let description = announcementElement.querySelector('.popup__description');
+    const description = announcementElement.querySelector('.popup__description');
     description.textContent = item.offer.description;
     itemHide(description);
 
 
     item.offer.features.forEach((features) => {
-      const featuresList = announcementElement.querySelector('.popup__features').querySelector('.popup__feature--' + features); // линтер ругается на конкатенацию
+      const featuresList = announcementElement.querySelector('.popup__features').querySelector(`.popup__feature--${features}`);
 
       if(featuresList) {
         featuresContainer.append(featuresList);
       }
 
-      let typeIndex = item.offer.type; // Линтер ругается, говорит что надо const
+      const typeIndex = item.offer.type;
 
       TYPE_OF_HOUSING.forEach((itemTypeOfHousing) => {
         if(itemTypeOfHousing === typeIndex) {
@@ -66,14 +66,14 @@ const createNewAnnouncementElement = () => {
       });
     });
 
-    let imgPhotoContainer = announcementElement.querySelector('.popup__photos'); // Линтер ругается, говорит что надо const
-    let imgPhotoCopyFind = imgPhotoContainer.querySelector('.popup__photo'); // Линтер ругается, говорит что надо const
+    const imgPhotoContainer = announcementElement.querySelector('.popup__photos');
+    const imgPhotoCopyFind = imgPhotoContainer.querySelector('.popup__photo');
 
     imgPhotoContainer.innerHTML = '';
     for(let i = 0; i < item.offer.photos.length; i++) {
-      let imgPhotoCopy = imgPhotoCopyFind.cloneNode(true);
+      const imgPhotoCopy = imgPhotoCopyFind.cloneNode(true);
       imgPhotoContainer.appendChild(imgPhotoCopy);
-      let allPhoto = imgPhotoContainer.querySelectorAll('.popup__photo'); // Линтер ругается, говорит что надо const
+      const allPhoto = imgPhotoContainer.querySelectorAll('.popup__photo');
       allPhoto[i].src = item.offer.photos[i];
     }
   });
