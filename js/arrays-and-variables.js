@@ -9,11 +9,11 @@ const TYPE_OF_HOUSING = [
 ];
 
 const TYPE_OF_HOUSING_RUS = [
-  'Дворец',
-  'Квартира',
-  'Дом',
-  'Бунгало',
-  'Отель',
+  {palace: 'Дворец'},
+  {flat: 'Квартира'},
+  {house: ' Дом'},
+  {bungalow: 'Бунгало'},
+  {hotel: 'Отель'},
 ];
 
 const CHECKIN = [

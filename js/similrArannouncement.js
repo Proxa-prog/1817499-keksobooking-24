@@ -1,8 +1,7 @@
-import {TYPE_OF_HOUSING_RUS, TYPE_OF_HOUSING} from './arrays-and-variables.js';
+import {TYPE_OF_HOUSING_RUS} from './arrays-and-variables.js';
 
 const templateCard = document.querySelector('#card').content.querySelector('.popup');
 const mapCanvas = document.querySelector('.map__canvas');
-const featuresContainer = document.createDocumentFragment();
 
 const itemHide = (item) => {
   if(item === '') {
@@ -13,7 +12,6 @@ const itemHide = (item) => {
 const createNewAnnouncementElement = (Array) => {
   Array.forEach((item) => {
     const announcementElement = templateCard.cloneNode(true);
-    mapCanvas.appendChild(announcementElement);
 
     const author = announcementElement.querySelector('.popup__avatar');
     author.src = item.author;
@@ -43,23 +41,26 @@ const createNewAnnouncementElement = (Array) => {
     description.textContent = item.offer.description;
     itemHide(description);
 
+    const featuresList = announcementElement.querySelector('.popup__features');
+    const featuresContainer = document.createDocumentFragment();
 
-    item.offer.features.forEach((features) => {
-      const featuresList = announcementElement.querySelector('.popup__features').querySelector(`.popup__feature--${features}`);
+    item.offer.features.forEach((feature) => {
+      const featureItem = featuresList.querySelector(`.popup__feature--${feature}`);
 
-      if(featuresList) {
-        featuresContainer.append(featuresList);
+      if (featureItem) {
+        featuresContainer.append(featureItem);
       }
+    });
 
-      const typeIndex = item.offer.type;
+    featuresList.innerHTML = '';
+    featuresList.append(featuresContainer);
 
-      TYPE_OF_HOUSING.forEach((itemTypeOfHousing) => {
-        if(itemTypeOfHousing === typeIndex) {
-          const TYPE_INDEX_ARRAY = TYPE_OF_HOUSING.indexOf(itemTypeOfHousing);
-          const TYPE_INDEX_ARRAY_RUS = TYPE_OF_HOUSING_RUS[TYPE_INDEX_ARRAY];
-          announcementElement.querySelector('.popup__type').textContent = TYPE_INDEX_ARRAY_RUS;
-        }
-      });
+    const typeIndex = item.offer.type;
+
+    TYPE_OF_HOUSING_RUS.forEach((itemTypeOfHousing) => {
+      if(Object.keys(itemTypeOfHousing) == typeIndex) {
+        announcementElement.querySelector('.popup__type').textContent = Object.values(itemTypeOfHousing);
+      }
     });
 
     const imgPhotoContainer = announcementElement.querySelector('.popup__photos');
@@ -69,9 +70,10 @@ const createNewAnnouncementElement = (Array) => {
     for(let i = 0; i < item.offer.photos.length; i++) {
       const imgPhotoCopy = imgPhotoCopyFind.cloneNode(true);
       imgPhotoContainer.appendChild(imgPhotoCopy);
-      const allPhoto = imgPhotoContainer.querySelectorAll('.popup__photo');
-      allPhoto[i].src = item.offer.photos[i];
+      imgPhotoCopy.src = item.offer.photos[i];
     }
+
+    mapCanvas.appendChild(announcementElement);
   });
 };
 
