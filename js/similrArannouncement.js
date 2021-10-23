@@ -4,8 +4,8 @@ const templateCard = document.querySelector('#card').content.querySelector('.pop
 const mapCanvas = document.querySelector('.map__canvas');
 
 const itemHide = (item) => {
-  if(item === '') {
-    item.hide();
+  if(item.innerText === '') {
+    item.remove();
   }
 };
 
@@ -20,7 +20,6 @@ const createNewAnnouncementElement = (Array) => {
     const title = announcementElement.querySelector('.popup__title');
     title.innerHTML = '';
     title.textContent = item.offer.title;
-    itemHide(title);
 
     const address = announcementElement.querySelector('.popup__text--address');
     address.innerHTML = '';
