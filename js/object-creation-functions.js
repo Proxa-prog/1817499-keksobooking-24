@@ -1,6 +1,6 @@
 import {ARRAY_LENGTH, TYPE_OF_HOUSING, CHECKIN, CHECKOUT, FEATURES, PHOTO, TITLE, DESCRIPTION} from './arrays-and-variables.js';
-import {getRandomPositiveFloat} from './get-random-positive-float.js';
-import {getRandomPositiveInteger} from './get-random-positive-integer.js';
+import {getRandomPositiveFloat} from './utils/get-random-positive-float.js';
+import {getRandomPositiveInteger} from './utils/get-random-positive-integer.js';
 
 let authorCount = 0;
 let featuresCount = 0;
@@ -10,9 +10,9 @@ const createAuthor = () => {
   for(let count = authorCount; count < ARRAY_LENGTH; count++) {
     authorCount++;
     if (count > 0) {
-      return {author: `img/avatars/user0${count}.png`};
+      return `img/avatars/user0${count}.png`;
     }
-    return {author: 'img/avatars/user10.png'};
+    return 'img/avatars/user10.png';
   }
 };
 
@@ -41,7 +41,9 @@ const createAd = () => {
   const locationlng = getRandomPositiveFloat(139.70000, 139.80000, 5);
 
   return {
-    author: createAuthor(),
+    author:
+      createAuthor(),
+
     offer: {
       title: TITLE[getRandomPositiveInteger(0, TITLE.length - 1)],
       address: String(`${locationlat}, ${locationlng}`),

@@ -8,6 +8,14 @@ const TYPE_OF_HOUSING = [
   'hotel',
 ];
 
+const TYPE_OF_HOUSING_RUS = [
+  {palace: 'Дворец'},
+  {flat: 'Квартира'},
+  {house: ' Дом'},
+  {bungalow: 'Бунгало'},
+  {hotel: 'Отель'},
+];
+
 const CHECKIN = [
   '12:00',
   '13:00',
@@ -61,4 +69,4 @@ const DESCRIPTION = [
   'Объеденённая кухня и туалёт - это удобно!',
 ];
 
-export {ARRAY_LENGTH, TYPE_OF_HOUSING, CHECKIN, CHECKOUT, FEATURES, PHOTO, TITLE, DESCRIPTION};
+export {ARRAY_LENGTH, TYPE_OF_HOUSING, CHECKIN, CHECKOUT, FEATURES, PHOTO, TITLE, DESCRIPTION, TYPE_OF_HOUSING_RUS};
