@@ -10,7 +10,7 @@ const itemHide = (item) => {
 };
 
 const createNewAnnouncementElement = (Array) => {
-  Array.forEach((item) => {
+    const item = Array[0];
     const announcementElement = templateCard.cloneNode(true);
 
     const author = announcementElement.querySelector('.popup__avatar');
@@ -78,8 +78,7 @@ const createNewAnnouncementElement = (Array) => {
     }
 
     mapCanvas.appendChild(announcementElement);
-  });
-};
+  };
 
 export {createNewAnnouncementElement};
 
