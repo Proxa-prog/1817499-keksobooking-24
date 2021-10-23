@@ -9,8 +9,7 @@ const itemHide = (item) => {
   }
 };
 
-const createNewAnnouncementElement = (Array) => {
-  const item = Array[0];
+const createNewAnnouncementElement = (item) => {
   const announcementElement = templateCard.cloneNode(true);
 
   const author = announcementElement.querySelector('.popup__avatar');
