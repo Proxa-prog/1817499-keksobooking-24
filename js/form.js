@@ -5,8 +5,6 @@ const mapFiltersChildren = mapFiltersWindow.children;
 const howManyRooms = formWindow.querySelector('#room_number');
 const howManyGuests = formWindow.querySelector('#capacity').querySelectorAll('option');
 
-
-
 const formDeactivation = () => {
   formWindow.classList.add('ad-form--disabled');
   mapFiltersWindow.classList.add('map__filters--disabled');
@@ -53,7 +51,7 @@ const ratioOfGuests = (evt) => {
       }
     }
   }
-}
+};
 
 howManyRooms.addEventListener('change', ratioOfGuests);
 
