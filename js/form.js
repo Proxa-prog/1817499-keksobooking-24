@@ -5,6 +5,10 @@ const mapFiltersSelect = mapFiltersWindow.querySelectorAll('select');
 const mapFiltersFieldset = mapFiltersWindow.querySelector('fieldset');
 const howManyRooms = formWindow.querySelector('#room_number');
 const howManyGuests = formWindow.querySelector('#capacity').querySelectorAll('option');
+const typeOfHousing = formWindow.querySelector('#type');
+const pricePerNight = formWindow.querySelector('#price');
+const timeIn = formWindow.querySelector('#timein');
+const timeOut = formWindow.querySelector('#timeout');
 
 const formDeactivation = () => {
   formWindow.classList.add('ad-form--disabled');
@@ -58,6 +62,56 @@ const ratioOfGuests = (evt) => {
   }
 };
 
+const showHousingCost = (evt) => {
+  const currentHouseType = evt.target.value;
+
+  switch(currentHouseType) {
+    case 'bungalow':
+      pricePerNight.placeholder = '0';
+      pricePerNight.min = '0';
+      break;
+    case 'flat':
+      pricePerNight.placeholder = '1000';
+      pricePerNight.min = '1000';
+      break;
+    case 'hotel':
+      pricePerNight.placeholder = '3000';
+      pricePerNight.min = '3000';
+      break;
+    case 'house':
+      pricePerNight.placeholder = '5000';
+      pricePerNight.min = '5000';
+      break;
+    case 'palace':
+      pricePerNight.placeholder = '100000';
+      pricePerNight.min = '100000';
+      break;
+  }
+};
+
+const onCheckInAndCheckOutTime = (evt) => {
+  const checkTime = evt.target.value;
+
+  switch(checkTime) {
+    case '12:00':
+      timeIn.value = '12:00';
+      timeOut.value = '12:00';
+      break;
+    case '13:00':
+      timeIn.value = '13:00';
+      timeOut.value = '13:00';
+      break;
+    case '14:00':
+      timeIn.value = '14:00';
+      timeOut.value = '14:00';
+      break;
+
+  }
+};
+
 howManyRooms.addEventListener('change', ratioOfGuests);
+typeOfHousing.addEventListener('change', showHousingCost);
+timeIn.addEventListener('change', onCheckInAndCheckOutTime);
+timeOut.addEventListener('change', onCheckInAndCheckOutTime);
 
 export {formDeactivation, formActivation};
