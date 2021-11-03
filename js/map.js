@@ -3,6 +3,7 @@ import {ARRAY_LENGTH} from './arrays-and-variables.js';
 import {createAd} from './object-creation-functions.js';
 import {formActivation} from './form.js';
 
+const address = document.querySelector('#address');
 const createArrayAd = Array.from({length: ARRAY_LENGTH}, createAd);
 
 const map = L.map('map-canvas')
@@ -16,7 +17,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 const mainPinIcon = L.icon({
-  iconUrl: '../img/main-pin.svg',
+  iconUrl: 'img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
@@ -37,7 +38,7 @@ marker.addTo(map);
 
 createArrayAd.forEach((item) => {
   const similarIcon = L.icon({
-    iconUrl: '../img/pin.svg',
+    iconUrl: 'img/pin.svg',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
   });
@@ -57,17 +58,13 @@ createArrayAd.forEach((item) => {
     .bindPopup(createNewAnnouncementElement(item));
 });
 
+address.readOnly = true;
+
 marker.on('moveend', (evt) => {
-  const address = document.querySelector('#address');
   const currentAddress = evt.target.getLatLng();
   const currentLat = currentAddress.lat;
   const currentLng = currentAddress.lng;
-
   address.value = `${currentLat.toFixed(5)} ${currentLng.toFixed(5)}`;
-  address.readOnly = true;
 });
 
-// map.on('load', () => {
-//   formActivation();
-// });
-formActivation();
+map.whenReady(formActivation());
