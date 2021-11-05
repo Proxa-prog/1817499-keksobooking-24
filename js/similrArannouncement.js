@@ -1,7 +1,6 @@
 import {TYPE_OF_HOUSING_RUS} from './arrays-and-variables.js';
 
 const templateCard = document.querySelector('#card').content.querySelector('.popup');
-const mapCanvas = document.querySelector('.map__canvas');
 
 const itemHide = (item) => {
   if(item.innerText === '') {
@@ -76,7 +75,7 @@ const createNewAnnouncementElement = (item) => {
     imgPhotoCopy.src = item.offer.photos[i];
   }
 
-  mapCanvas.appendChild(announcementElement);
+  return announcementElement;
 };
 
 export {createNewAnnouncementElement};
