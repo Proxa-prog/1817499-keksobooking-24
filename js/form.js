@@ -1,3 +1,6 @@
+import {showAlert} from './utils/utils.js';
+import {marker, address} from './map.js';
+
 const formWindow = document.querySelector('.ad-form');
 const mapFiltersWindow = document.querySelector('.map__filters');
 const formFieldset = formWindow.querySelectorAll('fieldset');
@@ -9,6 +12,10 @@ const typeOfHousing = formWindow.querySelector('#type');
 const pricePerNight = formWindow.querySelector('#price');
 const timeIn = formWindow.querySelector('#timein');
 const timeOut = formWindow.querySelector('#timeout');
+const success = document.querySelector('#success').content.querySelector('.success');
+const error = document.querySelector('#error').content.querySelector('.error');
+const reset = document.querySelector('.ad-form__reset');
+
 
 const formDeactivation = () => {
   formWindow.classList.add('ad-form--disabled');
@@ -109,9 +116,84 @@ const onCheckInAndCheckOutTime = (evt) => {
   }
 };
 
+const formReset = () => {
+  formWindow.reset();
+};
+
+formWindow.addEventListener('submit', (evt) => { // при правильно заполненных данных выдаёт сообщение об ошибке из catch
+  evt.preventDefault();
+
+  const formData = new FormData(evt.target);
+
+  fetch(
+    'https://24.javascript.pages.academy/keksobooking/data',
+    {
+      method: 'POST',
+      body: formData,
+    },
+  )
+    .then((response) => {
+      if (response.ok) {
+        showAlert('Форма отправлена');
+        formReset();
+        marker.setLatLng( // не возвращает карту на место
+          {
+            lat: 35.68405,
+            lng: 139.75312,
+          });
+
+        address.value = '35.68405 139.75312';
+
+        const successClone = success.cloneNode(true);
+        document.body.append(successClone);
+
+        successClone.addEventListener('click', () => {
+          successClone.remove();
+        });
+
+        formWindow.addEventListener('keydown', (successEvt) => {
+          if (successEvt.key === 'Escape') {
+            successClone.remove();
+          }
+        });
+
+      } else {
+        const errorClone = error.cloneNode(true);
+        document.body.append(errorClone);
+
+        errorClone.addEventListener('click', () => {
+          errorClone.remove();
+        });
+
+        formWindow.addEventListener('keydown', (errorEvt) => {
+          if (errorEvt.key === 'Escape') {
+            errorClone.remove();
+          }
+        });
+      }
+    })
+    .catch(() => {
+      showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+    });
+});
+
+reset.addEventListener('click', () => {
+  formReset();
+
+  marker.setLatLng(
+    {
+      lat: 35.68405,
+      lng: 139.75312,
+    });
+
+  const markerGet = marker.getLatLng();
+  address.value = `${markerGet.lat} ${markerGet.lng}`; // почему то не устанавлявает значение
+  // unbindPopup();  // как связать с similarIconMarker (map.js)
+});
+
 howManyRooms.addEventListener('change', ratioOfGuests);
 typeOfHousing.addEventListener('change', showHousingCost);
 timeIn.addEventListener('change', onCheckInAndCheckOutTime);
 timeOut.addEventListener('change', onCheckInAndCheckOutTime);
 
-export {formDeactivation, formActivation};
+export {formDeactivation, formActivation, formReset};

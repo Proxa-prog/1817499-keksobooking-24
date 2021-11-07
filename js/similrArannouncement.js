@@ -13,7 +13,7 @@ const createNewAnnouncementElement = (item) => {
 
   const author = announcementElement.querySelector('.popup__avatar');
   author.innerHTML = '';
-  author.src = item.author;
+  author.src = item.author.avatar;
 
   const title = announcementElement.querySelector('.popup__title');
   title.innerHTML = '';
@@ -47,13 +47,20 @@ const createNewAnnouncementElement = (item) => {
   const featuresList = announcementElement.querySelector('.popup__features');
   const featuresContainer = document.createDocumentFragment();
 
-  item.offer.features.forEach((feature) => {
-    const featureItem = featuresList.querySelector(`.popup__feature--${feature}`);
+  const features = item.offer.features;
 
-    if (featureItem) {
-      featuresContainer.append(featureItem);
-    }
-  });
+  if (features) {
+    features.forEach((feature) => {
+      const featureItem = featuresList.querySelector(`.popup__feature--${feature}`);
+
+      if (featureItem) {
+        featuresContainer.append(featureItem);
+      }
+    });
+  } else {
+    featuresList.remove();
+  }
+
 
   featuresList.innerHTML = '';
   featuresList.append(featuresContainer);
@@ -69,10 +76,16 @@ const createNewAnnouncementElement = (item) => {
   const imgPhotoCopyFind = imgPhotoContainer.querySelector('.popup__photo');
 
   imgPhotoContainer.innerHTML = '';
-  for(let i = 0; i < item.offer.photos.length; i++) {
-    const imgPhotoCopy = imgPhotoCopyFind.cloneNode(true);
-    imgPhotoContainer.appendChild(imgPhotoCopy);
-    imgPhotoCopy.src = item.offer.photos[i];
+
+  const photo = item.offer.photos;
+  if (photo) {
+    for(let i = 0; i < item.offer.photos.length; i++) {
+      const imgPhotoCopy = imgPhotoCopyFind.cloneNode(true);
+      imgPhotoContainer.appendChild(imgPhotoCopy);
+      imgPhotoCopy.src = item.offer.photos[i];
+    }
+  } else {
+    imgPhotoContainer.remove();
   }
 
   return announcementElement;

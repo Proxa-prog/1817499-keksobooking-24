@@ -1,10 +1,6 @@
 import {createNewAnnouncementElement} from './similrArannouncement.js';
-import {ARRAY_LENGTH} from './arrays-and-variables.js';
-import {createAd} from './object-creation-functions.js';
-import {formActivation} from './form.js';
 
 const address = document.querySelector('#address');
-const createArrayAd = Array.from({length: ARRAY_LENGTH}, createAd);
 
 const map = L.map('map-canvas')
   .setView({
@@ -36,27 +32,29 @@ const marker = L.marker(
 
 marker.addTo(map);
 
-createArrayAd.forEach((item) => {
-  const similarIcon = L.icon({
-    iconUrl: 'img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+const renderAnnouncementList = (element) => {
+  element.forEach((item) => {
+    const similarIcon = L.icon({
+      iconUrl: 'img/pin.svg',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    });
+
+    const similarIconMarker = L.marker(
+      {
+        lat: item.location.lat,
+        lng: item.location.lng,
+      },
+      {
+        similarIcon,
+      },
+    );
+
+    similarIconMarker
+      .addTo(map)
+      .bindPopup(createNewAnnouncementElement(item));
   });
-
-  const similarIconMarker = L.marker(
-    {
-      lat: item.location.lat,
-      lng: item.location.lng,
-    },
-    {
-      similarIcon,
-    },
-  );
-
-  similarIconMarker
-    .addTo(map)
-    .bindPopup(createNewAnnouncementElement(item));
-});
+};
 
 address.readOnly = true;
 
@@ -67,4 +65,4 @@ marker.on('moveend', (evt) => {
   address.value = `${currentLat.toFixed(5)} ${currentLng.toFixed(5)}`;
 });
 
-map.whenReady(formActivation());
+export {map, renderAnnouncementList, marker, address};
