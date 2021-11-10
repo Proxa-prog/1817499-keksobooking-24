@@ -1,4 +1,9 @@
+import {marker, address} from '../map.js';
+import {formWindow, formReset} from '../form.js';
+
 const ALERT_SHOW_TIME = 5000;
+const success = document.querySelector('#success').content.querySelector('.success');
+const error = document.querySelector('#error').content.querySelector('.error');
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -22,4 +27,43 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {showAlert};
+const onSuccess = () => {
+  formReset();
+  marker.setLatLng(
+    {
+      lat: 35.68405,
+      lng: 139.75312,
+    });
+
+  address.value = '35.68405 139.75312';
+
+  const successClone = success.cloneNode(true);
+  document.body.append(successClone);
+
+  successClone.addEventListener('click', () => {
+    successClone.remove();
+  });
+
+  formWindow.addEventListener('keydown', (successEvt) => {
+    if (successEvt.key === 'Escape') {
+      successClone.remove();
+    }
+  });
+};
+
+const onError = () => {
+  const errorClone = error.cloneNode(true);
+  document.body.append(errorClone);
+
+  errorClone.addEventListener('click', () => {
+    errorClone.remove();
+  });
+
+  formWindow.addEventListener('keydown', (errorEvt) => {
+    if (errorEvt.key === 'Escape') {
+      errorClone.remove();
+    }
+  });
+};
+
+export {showAlert, onSuccess, onError};

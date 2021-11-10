@@ -1,4 +1,6 @@
 import {createNewAnnouncementElement} from './similrArannouncement.js';
+// import {formActivation} from './form.js';
+
 
 const address = document.querySelector('#address');
 
@@ -7,6 +9,7 @@ const map = L.map('map-canvas')
     lat: 35.68405,
     lng: 139.75312,
   }, 10);
+  // .on('load', formActivation); // не успевает инициализироваться к моменту использования его тут
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -65,4 +68,4 @@ marker.on('moveend', (evt) => {
   address.value = `${currentLat.toFixed(5)} ${currentLng.toFixed(5)}`;
 });
 
-export {map, renderAnnouncementList, marker, address};
+export {renderAnnouncementList, marker, address};

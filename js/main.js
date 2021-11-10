@@ -1,12 +1,9 @@
-import {map} from'./map.js';
-import {formDeactivation, formActivation} from './form.js';
-import {createLoader} from './load.js';
+// import {map} from'./map.js';
+import {formDeactivation, formActivation, setUserFormSubmit} from './form.js';
 import {getData} from './api.js';
+import {renderAnnouncementList} from'./map.js';
 
-const loadAdvert = createLoader();
-
-getData();
-loadAdvert();
+getData(renderAnnouncementList);
 formDeactivation();
-map.whenReady(formActivation());
-// setUserFormSubmit();
+formActivation();
+setUserFormSubmit();
