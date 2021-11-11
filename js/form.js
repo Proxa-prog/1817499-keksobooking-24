@@ -1,6 +1,7 @@
 import {onSuccess, onError} from './utils/utils.js';
-import {sendData} from './api.js';
-import {marker, address} from './map.js';
+import {sendData, getData} from './api.js';
+import {marker, address, markerGroup, map} from './map.js';
+import {renderAnnouncementList} from'./map.js';
 
 const formWindow = document.querySelector('.ad-form');
 const mapFiltersWindow = document.querySelector('.map__filters');
@@ -13,7 +14,7 @@ const typeOfHousing = formWindow.querySelector('#type');
 const pricePerNight = formWindow.querySelector('#price');
 const timeIn = formWindow.querySelector('#timein');
 const timeOut = formWindow.querySelector('#timeout');
-// const reset = document.querySelector('.ad-form__reset');
+const reset = document.querySelector('.ad-form__reset');
 
 const formActivation = () => {
   formWindow.classList.remove('ad-form--disabled');
@@ -44,6 +45,8 @@ const formDeactivation = () => {
 
   mapFiltersFieldset.disabled = true;
 };
+
+formDeactivation();
 
 const ratioOfGuests = (evt) => {
   const currentValue = evt.target.value;
@@ -111,10 +114,8 @@ const onCheckInAndCheckOutTime = (evt) => {
   }
 };
 
-const formReset = () => { // не сбрасывает значения полей
-  for (let i = 0; i < formFieldset.length; i++) {
-    formFieldset[i].reset();
-  }
+const formReset = () => {
+  formWindow.reset();
 };
 
 const setUserFormSubmit = () => {
@@ -122,25 +123,35 @@ const setUserFormSubmit = () => {
     evt.preventDefault();
 
     sendData(
-      () => onSuccess(),
-      () => onError(),
+      onSuccess,
+      onError,
       new FormData(evt.target),
     );
   });
 };
 
-formWindow.addEventListener('reset', (evt) => {
+reset.addEventListener('click', (evt) => {
   evt.preventDefault();
+
   formReset();
+
   marker.setLatLng(
     {
       lat: 35.68405,
       lng: 139.75312,
     });
 
+  map
+    .setView({
+      lat: 35.68405,
+      lng: 139.75312,
+    }, 10);
+
   const markerGet = marker.getLatLng();
   address.value = `${markerGet.lat} ${markerGet.lng}`;
-  // unbindPopup();  // как связать с similarIconMarker (map.js)
+  markerGroup.clearLayers();
+  getData(renderAnnouncementList, onError);
+  markerGroup.unbindPopup();
 });
 
 howManyRooms.addEventListener('change', ratioOfGuests);

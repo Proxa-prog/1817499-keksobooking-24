@@ -1,18 +1,16 @@
-import {onError, showAlert} from './utils/utils.js';
-
-const getData = (create) => {
+const getData = (showAd, errorMessage) => {
   fetch('https://24.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
     .then((data) => {
-      create(data);
+      showAd(data);
     })
     .catch(() => {
-      onError();
+      errorMessage();
     });
 };
 
 
-const sendData = (Success, Fail, body) => {
+const sendData = (onSuccess, onFail, body) => {
   fetch(
     'https://24.javascript.pages.academy/keksobooking',
     {
@@ -22,16 +20,13 @@ const sendData = (Success, Fail, body) => {
   )
     .then((response) => {
       if (response.ok) {
-        Success();
-        showAlert('1'); // поставил чтобы понимать какой блок используется
+        onSuccess();
       } else {
-        Fail();
-        showAlert('2'); // поставил чтобы понимать какой блок используется
+        onFail();
       }
     })
     .catch(() => {
-      Fail();
-      showAlert('3'); // поставил чтобы понимать какой блок используется
+      onFail();
     });
 };
 
