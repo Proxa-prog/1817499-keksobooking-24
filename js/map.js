@@ -4,11 +4,11 @@ import {formActivation} from './form.js';
 const address = document.querySelector('#address');
 
 const map = L.map('map-canvas')
+  .on('load', formActivation)
   .setView({
     lat: 35.68405,
     lng: 139.75312,
-  }, 10)
-  .on('load', formActivation());
+  }, 10);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',

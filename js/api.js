@@ -1,11 +1,11 @@
-const getData = (showAd, errorMessage) => {
+const getData = (showDataElements, onFail) => {
   fetch('https://24.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
     .then((data) => {
-      showAd(data);
+      showDataElements(data);
     })
     .catch(() => {
-      errorMessage();
+      onFail();
     });
 };
 
