@@ -1,3 +1,8 @@
+import {onSuccess, onError} from './utils/utils.js';
+import {sendData, getData} from './api.js';
+import {marker, address, markerGroup, map} from './map.js';
+import {renderAnnouncementList} from'./map.js';
+
 const formWindow = document.querySelector('.ad-form');
 const mapFiltersWindow = document.querySelector('.map__filters');
 const formFieldset = formWindow.querySelectorAll('fieldset');
@@ -9,22 +14,7 @@ const typeOfHousing = formWindow.querySelector('#type');
 const pricePerNight = formWindow.querySelector('#price');
 const timeIn = formWindow.querySelector('#timein');
 const timeOut = formWindow.querySelector('#timeout');
-
-const formDeactivation = () => {
-  formWindow.classList.add('ad-form--disabled');
-  mapFiltersWindow.classList.add('map__filters--disabled');
-
-  for(let i = 0; i < formFieldset.length; i++) {
-    formFieldset[i].disabled = true;
-  }
-
-  for(let i = 0; i < mapFiltersSelect.length; i++) {
-    mapFiltersSelect[i].disabled = true;
-  }
-
-  mapFiltersFieldset.disabled = true;
-};
-
+const reset = document.querySelector('.ad-form__reset');
 
 const formActivation = () => {
   formWindow.classList.remove('ad-form--disabled');
@@ -41,6 +31,22 @@ const formActivation = () => {
   mapFiltersFieldset.disabled = false;
 };
 
+const formDeactivation = () => {
+  formWindow.classList.add('ad-form--disabled');
+  mapFiltersWindow.classList.add('map__filters--disabled');
+
+  for(let i = 0; i < formFieldset.length; i++) {
+    formFieldset[i].disabled = true;
+  }
+
+  for(let i = 0; i < mapFiltersSelect.length; i++) {
+    mapFiltersSelect[i].disabled = true;
+  }
+
+  mapFiltersFieldset.disabled = true;
+};
+
+formDeactivation();
 
 const ratioOfGuests = (evt) => {
   const currentValue = evt.target.value;
@@ -105,13 +111,52 @@ const onCheckInAndCheckOutTime = (evt) => {
       timeIn.value = '14:00';
       timeOut.value = '14:00';
       break;
-
   }
 };
+
+const formReset = () => {
+  formWindow.reset();
+};
+
+const setUserFormSubmit = () => {
+  formWindow.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      onSuccess,
+      onError,
+      new FormData(evt.target),
+    );
+  });
+};
+
+reset.addEventListener('click', (evt) => {
+  evt.preventDefault();
+
+  formReset();
+
+  marker.setLatLng(
+    {
+      lat: 35.68405,
+      lng: 139.75312,
+    });
+
+  map
+    .setView({
+      lat: 35.68405,
+      lng: 139.75312,
+    }, 10);
+
+  const markerGet = marker.getLatLng();
+  address.value = `${markerGet.lat} ${markerGet.lng}`;
+  markerGroup.clearLayers();
+  getData(renderAnnouncementList, onError);
+  markerGroup.unbindPopup();
+});
 
 howManyRooms.addEventListener('change', ratioOfGuests);
 typeOfHousing.addEventListener('change', showHousingCost);
 timeIn.addEventListener('change', onCheckInAndCheckOutTime);
 timeOut.addEventListener('change', onCheckInAndCheckOutTime);
 
-export {formDeactivation, formActivation};
+export {formDeactivation, formActivation, formWindow, setUserFormSubmit, formReset};
