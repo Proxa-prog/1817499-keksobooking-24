@@ -1,11 +1,11 @@
-const getData = (showDataElements, onFail) => {
+const getData = (showDataElements, theServerIsNotResponding) => {
   fetch('https://24.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
     .then((data) => {
       showDataElements(data);
     })
     .catch(() => {
-      onFail();
+      theServerIsNotResponding();
     });
 };
 
