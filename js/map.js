@@ -1,6 +1,7 @@
-import {createNewAnnouncementElement} from './similrArannouncement.js';
+import {createNewAnnouncementElement, compareAdvert} from './similrArannouncement.js';
 import {formActivation} from './form.js';
 
+const SIMILAR_ADD_COUNT = 10;
 const address = document.querySelector('#address');
 
 const map = L.map('map-canvas')
@@ -37,28 +38,32 @@ marker.addTo(map);
 const markerGroup = L.layerGroup().addTo(map);
 
 const renderAnnouncementList = (element) => {
-  element.forEach((item) => {
-    const similarIcon = L.icon({
-      iconUrl: 'img/pin.svg',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
+  element
+    .slice()
+    .sort(compareAdvert)
+    .slice(0, SIMILAR_ADD_COUNT)
+    .forEach((item) => {
+      const similarIcon = L.icon({
+        iconUrl: 'img/pin.svg',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+      });
+
+      const similarIconMarker = L.marker(
+        {
+          lat: item.location.lat,
+          lng: item.location.lng,
+        },
+
+        {
+          similarIcon,
+        },
+      );
+
+      similarIconMarker
+        .addTo(markerGroup)
+        .bindPopup(createNewAnnouncementElement(item));
     });
-
-    const similarIconMarker = L.marker(
-      {
-        lat: item.location.lat,
-        lng: item.location.lng,
-      },
-
-      {
-        similarIcon,
-      },
-    );
-
-    similarIconMarker
-      .addTo(markerGroup)
-      .bindPopup(createNewAnnouncementElement(item));
-  });
 };
 
 address.readOnly = true;

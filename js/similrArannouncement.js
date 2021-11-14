@@ -1,6 +1,21 @@
 import {TYPE_OF_HOUSING_RUS} from './arrays-and-variables.js';
+import {mapFiltersWindow} from './form.js';
+import {onError} from './utils/utils.js';
+import {getData} from './api.js';
+import {renderAnnouncementList} from './map.js';
+import {markerGroup} from './map.js';
 
+const housingFeatures = mapFiltersWindow.querySelector('#housing-features').querySelectorAll('input');
 const templateCard = document.querySelector('#card').content.querySelector('.popup');
+const housingType = mapFiltersWindow.querySelector('#housing-type');
+const housingPrice = mapFiltersWindow.querySelector('#housing-price');
+const housingRooms = mapFiltersWindow.querySelector('#housing-rooms');
+const housingGuests = mapFiltersWindow.querySelector('#housing-guests');
+let housingTypeCurrent = '';
+let housingPriceCurrent = '';
+let housingRoomsCurrent = '';
+let housingGuestsCurrent = '';
+
 
 const itemHide = (item) => {
   if(item.innerText === '') {
@@ -91,5 +106,101 @@ const createNewAnnouncementElement = (item) => {
   return announcementElement;
 };
 
-export {createNewAnnouncementElement};
+const getHouseType = () => {
+  housingTypeCurrent = housingType.value;
+  return housingTypeCurrent;
+};
 
+const getHousePrice = () => {
+  housingPriceCurrent = housingPrice.value;
+  return housingPriceCurrent;
+};
+
+const getNumberOfRooms = () => {
+  housingRoomsCurrent = Number(housingRooms.value);
+  return housingRoomsCurrent;
+};
+
+const getNumberOfGuests = () => {
+  housingGuestsCurrent = housingGuests.value;
+  return housingGuestsCurrent;
+};
+
+const getSelectFeatures = (item) => {
+  let featureRank = 0;
+  if (item.offer.features) {
+    for (let i = 0; i < housingFeatures.length; i++) {
+      if (housingFeatures[i].checked) {
+        if (housingFeatures[i].value === item.offer.features[i]) {
+          featureRank += 1;
+        }
+      }
+    }
+  }
+
+  return featureRank;
+};
+
+const getFilterValue = () => {
+  markerGroup.clearLayers();
+  getData(renderAnnouncementList, onError);
+  markerGroup.unbindPopup();
+};
+
+mapFiltersWindow.addEventListener('change', getFilterValue);
+
+
+const getAddRank = (advert, houseType, housePrice, howManyRooms, homManyGuests, featuresRank) => {
+  let rank = 0;
+
+  if (houseType === advert.offer.type) {
+    rank += 1;
+  }
+
+  switch (housePrice) {
+    case 'middle':
+      if (advert.offer.price > 10000 && advert.offer.price < 50000) {
+        rank += 2;
+      }
+      break;
+    case 'low':
+      if (advert.offer.price < 10000) {
+        rank += 1;
+      }
+      break;
+    case 'high':
+      if (advert.offer.price > 50000) {
+        rank += 3;
+      }
+      break;
+    default:
+      rank += 0;
+  }
+
+  if (howManyRooms === advert.offer.rooms) {
+    rank += 1;
+  } else {
+    rank += 0;
+  }
+
+  if (homManyGuests === String(advert.offer.guests)) {
+    rank += 1;
+  } else if (homManyGuests === '0') {
+    rank += 2;
+  } else {
+    rank += 0;
+  } // не понимаю как правильно сделать поля "не для гостей" и "любое число гостей"
+
+  rank += featuresRank;
+  return rank;
+};
+
+
+const compareAdvert = (advert1, advert2) => {
+  const rank1 = getAddRank(advert1, getHouseType(), getHousePrice(), getNumberOfRooms(), getNumberOfGuests(), getSelectFeatures(advert1));
+  const rank2 = getAddRank(advert2, getHouseType(), getHousePrice(), getNumberOfRooms(), getNumberOfGuests(), getSelectFeatures(advert2));
+
+  return rank2 - rank1;
+};
+
+export {createNewAnnouncementElement, compareAdvert};
