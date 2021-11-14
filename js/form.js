@@ -15,7 +15,6 @@ const pricePerNight = formWindow.querySelector('#price');
 const timeIn = formWindow.querySelector('#timein');
 const timeOut = formWindow.querySelector('#timeout');
 const reset = document.querySelector('.ad-form__reset');
-// const housingType = mapFiltersWindow.querySelector('#housing-type');
 
 const formActivation = () => {
   formWindow.classList.remove('ad-form--disabled');
@@ -155,12 +154,6 @@ reset.addEventListener('click', (evt) => {
   markerGroup.unbindPopup();
 });
 
-// const getHousingType = () => {
-//   housingType.addEventListener('change', (evt) => {
-//     const housingTypeCurrent = evt.target.value;
-//   });
-// };
-// console.log(getHousingType());
 howManyRooms.addEventListener('change', ratioOfGuests);
 typeOfHousing.addEventListener('change', showHousingCost);
 timeIn.addEventListener('change', onCheckInAndCheckOutTime);
