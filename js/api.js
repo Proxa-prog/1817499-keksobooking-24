@@ -1,11 +1,16 @@
-const getData = (showDataElements, theServerIsNotResponding) => {
+import {getFilterValue} from './filter.js';
+import {renderAnnouncementList} from './map.js';
+import {onError} from './utils/utils.js';
+
+const getData = () => {
   fetch('https://24.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
     .then((data) => {
-      showDataElements(data);
+      renderAnnouncementList(data.slice(0, 10));
+      getFilterValue(data);
     })
     .catch(() => {
-      theServerIsNotResponding();
+      onError();
     });
 };
 

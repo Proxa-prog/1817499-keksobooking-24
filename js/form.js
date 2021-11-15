@@ -116,6 +116,7 @@ const onCheckInAndCheckOutTime = (evt) => {
 
 const formReset = () => {
   formWindow.reset();
+  mapFiltersWindow.reset();
 };
 
 const setUserFormSubmit = () => {
