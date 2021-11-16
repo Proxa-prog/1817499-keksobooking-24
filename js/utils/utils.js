@@ -1,30 +1,8 @@
 import {marker, address} from '../map.js';
 import {formWindow, formReset} from '../form.js';
 
-const ALERT_SHOW_TIME = 5000;
 const success = document.querySelector('#success').content.querySelector('.success');
 const error = document.querySelector('#error').content.querySelector('.error');
-
-const showAlert = (message) => {
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = 100;
-  alertContainer.style.position = 'fixed';
-  alertContainer.style.left = '25%';
-  alertContainer.style.top = '50%';
-  alertContainer.style.width = '50%';
-  alertContainer.style.height = 50;
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
-  alertContainer.textContent = message;
-
-  document.body.append(alertContainer);
-
-  setTimeout(() => {
-    alertContainer.remove();
-  }, ALERT_SHOW_TIME);
-};
 
 const onSuccess = () => {
   formReset();
@@ -41,13 +19,13 @@ const onSuccess = () => {
 
   successClone.addEventListener('click', () => {
     successClone.remove();
-  });
+  }, {once: true});
 
   formWindow.addEventListener('keydown', (successEvt) => {
     if (successEvt.key === 'Escape') {
       successClone.remove();
     }
-  });
+  }, {once: true});
 };
 
 const onError = () => {
@@ -56,13 +34,13 @@ const onError = () => {
 
   errorClone.addEventListener('click', () => {
     errorClone.remove();
-  });
+  }, {once: true});
 
   formWindow.addEventListener('keydown', (errorEvt) => {
     if (errorEvt.key === 'Escape') {
       errorClone.remove();
     }
-  });
+  }, {once: true});
 };
 
-export {showAlert, onSuccess, onError};
+export {onSuccess, onError};

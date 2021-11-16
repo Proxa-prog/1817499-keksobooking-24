@@ -1,6 +1,6 @@
 const ARRAY_LENGTH = 10;
 
-const TYPE_OF_HOUSING = [
+const TYPES_OF_HOUSING = [
   'palace',
   'flat',
   'house',
@@ -8,7 +8,7 @@ const TYPE_OF_HOUSING = [
   'hotel',
 ];
 
-const TYPE_OF_HOUSING_RUS = [
+const TYPES_OF_HOUSING_RUS = [
   {palace: 'Дворец'},
   {flat: 'Квартира'},
   {house: ' Дом'},
@@ -16,13 +16,13 @@ const TYPE_OF_HOUSING_RUS = [
   {hotel: 'Отель'},
 ];
 
-const CHECKIN = [
+const CHECKINS = [
   '12:00',
   '13:00',
   '14:00',
 ];
 
-const CHECKOUT = [
+const CHECKOUTS = [
   '12:00',
   '13:00',
   '14:00',
@@ -37,13 +37,13 @@ const FEATURES = [
   'conditioner',
 ];
 
-const PHOTO = [
+const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-const TITLE = [
+const TITLES = [
   'Самые выгодные предложения',
   'Лучший вид из окна во всём Токио!',
   'Соседей практически не слышно!',
@@ -56,7 +56,7 @@ const TITLE = [
   'У нас самые низкие цены',
 ];
 
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'Апартаменты в традиционном, японском стиле',
   'Дёшево и сердито',
   'Дорого и радостно',
@@ -69,4 +69,4 @@ const DESCRIPTION = [
   'Объеденённая кухня и туалёт - это удобно!',
 ];
 
-export {ARRAY_LENGTH, TYPE_OF_HOUSING, CHECKIN, CHECKOUT, FEATURES, PHOTO, TITLE, DESCRIPTION, TYPE_OF_HOUSING_RUS};
+export {ARRAY_LENGTH, TYPES_OF_HOUSING, CHECKINS, CHECKOUTS, FEATURES, PHOTOS, TITLES, DESCRIPTIONS, TYPES_OF_HOUSING_RUS};
