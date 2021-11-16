@@ -118,6 +118,7 @@ const onCheckInAndCheckOutTime = (evt) => {
 const formReset = () => {
   formWindow.reset();
   mapFiltersWindow.reset();
+  address.value = `${markerGet.lat} ${markerGet.lng}`;
 };
 
 
@@ -132,7 +133,6 @@ const setUserFormSubmit = () => {
     );
 
     mapReset();
-    address.value = `${markerGet.lat} ${markerGet.lng}`;
   });
 };
 
