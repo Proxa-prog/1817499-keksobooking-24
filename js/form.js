@@ -132,6 +132,7 @@ const setUserFormSubmit = () => {
     );
 
     mapReset();
+    address.value = `${markerGet.lat} ${markerGet.lng}`;
   });
 };
 

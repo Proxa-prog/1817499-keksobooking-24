@@ -1,4 +1,4 @@
-import {marker, address} from '../map.js';
+import {marker} from '../map.js';
 import {formWindow, formReset} from '../form.js';
 
 const success = document.querySelector('#success').content.querySelector('.success');
@@ -11,8 +11,6 @@ const onSuccess = () => {
       lat: 35.68405,
       lng: 139.75312,
     });
-
-  address.value = '35.68405 139.75312';
 
   const successClone = success.cloneNode(true);
   document.body.append(successClone);
