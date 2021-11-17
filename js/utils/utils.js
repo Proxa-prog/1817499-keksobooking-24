@@ -1,34 +1,8 @@
 import {marker} from '../map.js';
-import {formWindow, formReset} from '../form.js';
+import {formReset} from '../form.js';
 
 const success = document.querySelector('#success').content.querySelector('.success');
 const error = document.querySelector('#error').content.querySelector('.error');
-const successClone = success.cloneNode(true);
-const errorClone = error.cloneNode(true);
-
-function removeSuccessClick () {
-  successClone.remove();
-  successClone.removeEventListener('click', removeSuccessClick);
-}
-
-function removeSuccessKeydown (successEvt) {
-  if (successEvt.key === 'Escape') {
-    successClone.remove();
-  }
-  formWindow.removeEventListener('keydown', removeSuccessKeydown);
-}
-
-function removeOnErrorsClick () {
-  errorClone.remove();
-  errorClone.removeEventListener('click', removeOnErrorsClick);
-}
-
-function removeOnErrorKeydown (errorEvt) {
-  if (errorEvt.key === 'Escape') {
-    errorClone.remove();
-  }
-  formWindow.removeEventListener('keydown', removeOnErrorKeydown);
-}
 
 const onSuccess = () => {
   formReset();
@@ -38,19 +12,50 @@ const onSuccess = () => {
       lng: 139.75312,
     });
 
+  const successClone = success.cloneNode(true);
 
-  document.body.append(successClone);
+  function removeSuccessClick () {
+    removeElement();
+  }
+
+  function removeSuccessKeydown (successEvt) {
+    if (successEvt.key === 'Escape') {
+      removeElement();
+    }
+  }
+
+  function removeElement () {
+    successClone.remove();
+    document.removeEventListener('keydown', removeSuccessKeydown);
+  }
 
   successClone.addEventListener('click', removeSuccessClick);
 
-  formWindow.addEventListener('keydown', removeSuccessKeydown);
+  document.addEventListener('keydown', removeSuccessKeydown);
+  document.body.append(successClone);
 };
 
 const onError = () => {
-  document.body.append(errorClone);
+  const errorClone = error.cloneNode(true);
 
-  errorClone.addEventListener('click', removeOnErrorsClick);
-  formWindow.addEventListener('keydown', removeOnErrorKeydown);
+  function removeErrorClick () {
+    removeElement();
+  }
+
+  function removeErrorKeydown (successEvt) {
+    if (successEvt.key === 'Escape') {
+      removeErrorClick();
+    }
+  }
+
+  function removeElement () {
+    errorClone.remove();
+    document.removeEventListener('keydown', removeErrorKeydown);
+  }
+
+  errorClone.addEventListener('click', removeErrorClick);
+  document.addEventListener('keydown', removeErrorKeydown);
+  document.body.append(errorClone);
 };
 
 export {onSuccess, onError};
