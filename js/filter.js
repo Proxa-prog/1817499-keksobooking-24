@@ -34,9 +34,10 @@ const getFilterValue = (offers) => {
     const filteredOffers = offers.filter((offer) => getHouseType(offer) && getHousePrice(offer) && getNumberOfRooms(offer) && getNumberOfGuests(offer) && getSelectFeatures(offer));
     markerGroup.clearLayers();
     renderAnnouncementList(filteredOffers.slice(0, SIMILAR_ADD_COUNT));
-    return filteredOffers;
   },
   ));
+
+  document.querySelector('.map__filters').removeEventListener('change', debounce());
 };
 
 export {getFilterValue};

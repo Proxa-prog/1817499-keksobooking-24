@@ -66,6 +66,7 @@ const getRatioOfGuests = (evt) => {
       }
     }
   }
+  howManyRooms.removeEventListener('change', getRatioOfGuests);
 };
 
 const showHousingCost = (evt) => {
@@ -93,6 +94,8 @@ const showHousingCost = (evt) => {
       pricePerNight.min = '100000';
       break;
   }
+
+  typeOfHousing.removeEventListener('change', showHousingCost);
 };
 
 const onCheckInAndCheckOutTime = (evt) => {
@@ -112,6 +115,9 @@ const onCheckInAndCheckOutTime = (evt) => {
       timeOut.value = '14:00';
       break;
   }
+
+  timeIn.removeEventListener('change', onCheckInAndCheckOutTime);
+  timeOut.removeEventListener('change', onCheckInAndCheckOutTime);
 };
 
 
