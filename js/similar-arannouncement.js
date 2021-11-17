@@ -1,4 +1,4 @@
-import {TYPE_OF_HOUSING_RUS} from './arrays-and-variables.js';
+import {TYPES_OF_HOUSING_RUS} from './arrays-and-variables.js';
 
 const templateCard = document.querySelector('#card').content.querySelector('.popup');
 
@@ -66,7 +66,7 @@ const createNewAnnouncementElement = (item) => {
   featuresList.append(featuresContainer);
 
   const typeIndex = item.offer.type;
-  TYPE_OF_HOUSING_RUS.forEach((itemTypeOfHousing) => {
+  TYPES_OF_HOUSING_RUS.forEach((itemTypeOfHousing) => {
     if(Object.keys(itemTypeOfHousing)[0] === typeIndex) {
       announcementElement.querySelector('.popup__type').textContent = Object.values(itemTypeOfHousing);
     }
@@ -92,4 +92,3 @@ const createNewAnnouncementElement = (item) => {
 };
 
 export {createNewAnnouncementElement};
-
