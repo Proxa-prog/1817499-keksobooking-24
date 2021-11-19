@@ -1,13 +1,13 @@
 import {createNewAnnouncementElement} from './similar-arannouncement.js';
-import {formActivation} from './form.js';
+import {startFormActivation} from './form.js';
 import {getData, currentData} from './api.js';
 
-const address = document.querySelector('#address');
+const addressElement = document.querySelector('#address');
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    formActivation();
     getData();
+    startFormActivation();
   })
   .setView({
     lat: 35.68405,
@@ -37,14 +37,14 @@ const marker = L.marker(
 );
 
 const markerGet = marker.getLatLng();
-address.value = `${markerGet.lat} ${markerGet.lng}`;
+addressElement.value = `${markerGet.lat} ${markerGet.lng}`;
 
 marker.addTo(map);
 
 const markerGroup = L.layerGroup().addTo(map);
 
-const renderAnnouncementList = (element) => {
-  element.forEach((item) => {
+const renderAnnouncementList = (elements) => {
+  elements.forEach((item) => {
     const similarIcon = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [40, 40],
@@ -86,13 +86,13 @@ const mapReset = () => {
   markerGroup.unbindPopup();
 };
 
-address.readOnly = true;
+addressElement.readOnly = true;
 
 marker.on('moveend', (evt) => {
   const currentAddress = evt.target.getLatLng();
   const currentLat = currentAddress.lat;
   const currentLng = currentAddress.lng;
-  address.value = `${currentLat.toFixed(5)} ${currentLng.toFixed(5)}`;
+  addressElement.value = `${currentLat.toFixed(5)} ${currentLng.toFixed(5)}`;
 });
 
-export {renderAnnouncementList, marker, address, markerGroup, map, mapReset, markerGet};
+export {renderAnnouncementList, marker, addressElement, markerGroup, map, mapReset, markerGet};

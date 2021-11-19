@@ -1,8 +1,8 @@
 import {marker} from '../map.js';
 import {formReset} from '../form.js';
 
-const success = document.querySelector('#success').content.querySelector('.success');
-const error = document.querySelector('#error').content.querySelector('.error');
+const successElement = document.querySelector('#success').content.querySelector('.success');
+const errorElement = document.querySelector('#error').content.querySelector('.error');
 
 const onSuccess = () => {
   formReset();
@@ -12,16 +12,20 @@ const onSuccess = () => {
       lng: 139.75312,
     });
 
-  const successClone = success.cloneNode(true);
+  const successClone = successElement.cloneNode(true);
+
+  const isEscapeKey = (evt) => {
+    if (evt.key === 'Escape') {
+      removeElement();
+    }
+  };
 
   function removeSuccessClick () {
     removeElement();
   }
 
   function removeSuccessKeydown (successEvt) {
-    if (successEvt.key === 'Escape') {
-      removeElement();
-    }
+    isEscapeKey(successEvt);
   }
 
   function removeElement () {
@@ -36,7 +40,7 @@ const onSuccess = () => {
 };
 
 const onError = () => {
-  const errorClone = error.cloneNode(true);
+  const errorClone = errorElement.cloneNode(true);
 
   function removeErrorClick () {
     removeElement();
@@ -57,5 +61,6 @@ const onError = () => {
   document.addEventListener('keydown', removeErrorKeydown);
   document.body.append(errorClone);
 };
+
 
 export {onSuccess, onError};

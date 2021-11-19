@@ -1,26 +1,26 @@
-import {renderAnnouncementList} from './map.js';
-import {markerGroup} from './map.js';
+import {renderAnnouncementList, markerGroup} from './map.js';
 import {debounce} from './utils/debounce.js';
+import {SIMILAR_ADD_COUNT, ANY_VALUE, PRICE_LOW_VALUE, PRICE_MIDDLE_VALUE, PRICE_HIGH_VALUE, PRICE_LOW_NUMBER, PRICE_HIGH_NUMBER} from './arrays-and-variables.js';
 
-const SIMILAR_ADD_COUNT = 10;
-const housingType = document.querySelector('.map__filters').querySelector('#housing-type');
-const housingPrice = document.querySelector('.map__filters').querySelector('#housing-price');
-const housingRooms = document.querySelector('.map__filters').querySelector('#housing-rooms');
-const housingGuests = document.querySelector('.map__filters').querySelector('#housing-guests');
+const mapFiltersElement = document.querySelector('.map__filters');
+const housingTypeElement = mapFiltersElement.querySelector('#housing-type');
+const housingPriceElement = mapFiltersElement.querySelector('#housing-price');
+const housingRoomsElement = mapFiltersElement.querySelector('#housing-rooms');
+const housingGuestsElement = mapFiltersElement.querySelector('#housing-guests');
 
-const getHouseType = (currentAdd) => currentAdd.offer.type === housingType.value || housingType.value === 'any';
+const getHouseType = (currentAdd) => currentAdd.offer.type === housingTypeElement.value || housingTypeElement.value === ANY_VALUE;
 
-const getHousePrice = (currentAdd) => housingPrice.value === 'any'
-  || currentAdd.offer.price < 10000 && housingPrice.value === 'low'
-  || currentAdd.offer.price >= 10000 && currentAdd.offer.price < 50000 && housingPrice.value === 'middle'
-  || currentAdd.offer.price > 50000 && housingPrice.value === 'high';
+const getHousePrice = (currentAdd) => housingPriceElement.value === ANY_VALUE
+  || currentAdd.offer.price < PRICE_LOW_NUMBER && housingPriceElement.value === PRICE_LOW_VALUE
+  || currentAdd.offer.price >= PRICE_LOW_NUMBER && currentAdd.offer.price < PRICE_HIGH_NUMBER && housingPriceElement.value === PRICE_MIDDLE_VALUE
+  || currentAdd.offer.price > PRICE_HIGH_NUMBER && housingPriceElement.value === PRICE_HIGH_VALUE;
 
-const getNumberOfRooms = (currentAdd) => currentAdd.offer.rooms === Number(housingRooms.value) || housingRooms.value === 'any';
+const getNumberOfRooms = (currentAdd) => currentAdd.offer.rooms === Number(housingRoomsElement.value) || housingRoomsElement.value === ANY_VALUE;
 
-const getNumberOfGuests = (currentAdd) => currentAdd.offer.guests === Number(housingGuests.value) || housingGuests.value === 'any';
+const getNumberOfGuests = (currentAdd) => currentAdd.offer.guests === Number(housingGuestsElement.value) || housingGuestsElement.value === ANY_VALUE;
 
 const getSelectFeatures = (currentAdd) => {
-  const housingFeatures = document.querySelector('.map__filters').querySelectorAll('.map__checkbox:checked');
+  const housingFeatures = mapFiltersElement.querySelectorAll('.map__checkbox:checked');
   const featuresValue = [...housingFeatures].map((item) => item.value);
 
   if (!currentAdd.offer.features) {
@@ -30,14 +30,14 @@ const getSelectFeatures = (currentAdd) => {
 };
 
 const getFilterValue = (offers) => {
-  document.querySelector('.map__filters').addEventListener('change', debounce(() => {
+  mapFiltersElement.addEventListener('change', debounce(() => {
     const filteredOffers = offers.filter((offer) => getHouseType(offer) && getHousePrice(offer) && getNumberOfRooms(offer) && getNumberOfGuests(offer) && getSelectFeatures(offer));
     markerGroup.clearLayers();
     renderAnnouncementList(filteredOffers.slice(0, SIMILAR_ADD_COUNT));
   },
   ));
 
-  document.querySelector('.map__filters').removeEventListener('change', debounce());
+  mapFiltersElement.removeEventListener('change', debounce());
 };
 
 export {getFilterValue};
