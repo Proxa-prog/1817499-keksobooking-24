@@ -20,8 +20,6 @@ const TWELVE_HOURS = '12:00';
 const THITTEEN_HOUSR = '13:00';
 const FOURTEEN_HOURS = '14:00';
 
-
-
 const TYPES_OF_HOUSING_RUS = [
   {palace: 'Дворец'},
   {flat: 'Квартира'},
