@@ -20,15 +20,15 @@ const onSuccess = () => {
     }
   };
 
-  function removeSuccessClick () {
+  const removeSuccessClick = () => {
     removeElement();
   }
 
-  function removeSuccessKeydown (successEvt) {
+  const removeSuccessKeydown = (successEvt) => {
     isEscapeKey(successEvt);
   }
 
-  function removeElement () {
+  const removeElement = () => {
     successClone.remove();
     document.removeEventListener('keydown', removeSuccessKeydown);
   }

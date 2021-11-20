@@ -49,7 +49,7 @@ const startFormDeactivation = () => {
 
 startFormDeactivation();
 
-const getRatioOfGuests = (evt) => {
+const getRatioOfGuestsChangeHandler = (evt) => {
   const currentValue = evt.target.value;
   for(let i = 0; i < howManyGuestsElement.length; i++) {
     if(currentValue === howManyGuestsElement[i].value || howManyGuestsElement[i].value < currentValue && howManyGuestsElement[i].value !== ZERO_VALUE_STRING) {
@@ -69,7 +69,7 @@ const getRatioOfGuests = (evt) => {
   }
 };
 
-const showHousingCost = (evt) => {
+const showHousingCostChangeHandler = (evt) => {
   const currentHouseType = evt.target.value;
 
   switch(currentHouseType) {
@@ -96,7 +96,7 @@ const showHousingCost = (evt) => {
   }
 };
 
-const onCheckInAndCheckOutTime = (evt) => {
+const CheckInAndCheckOutTimeChangeHandler = (evt) => {
   const checkTime = evt.target.value;
 
   switch(checkTime) {
@@ -149,9 +149,9 @@ resetElement.addEventListener('click', (evt) => {
   addressElement.value = `${markerGet.lat} ${markerGet.lng}`;
 });
 
-howManyRoomsElement.addEventListener('change', getRatioOfGuests);
-typeOfHousingElement.addEventListener('change', showHousingCost);
-timeInElement.addEventListener('change', onCheckInAndCheckOutTime);
-timeOutElement.addEventListener('change', onCheckInAndCheckOutTime);
+howManyRoomsElement.addEventListener('change', getRatioOfGuestsChangeHandler);
+typeOfHousingElement.addEventListener('change', showHousingCostChangeHandler);
+timeInElement.addEventListener('change', CheckInAndCheckOutTimeChangeHandler);
+timeOutElement.addEventListener('change', CheckInAndCheckOutTimeChangeHandler);
 
-export {startFormActivation, setUserFormSubmit, formReset};
+export {startFormActivation, setUserFormSubmit, formReset, formWindowElement};
