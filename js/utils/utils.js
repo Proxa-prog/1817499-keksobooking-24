@@ -14,33 +14,34 @@ const onSuccess = () => {
 
   const successClone = successElement.cloneNode(true);
 
-  const isEscapeKey = (evt) => {
-    if (evt.key === 'Escape') {
-      removeElement();
-    }
-  };
-
-  const removeSuccessClick = () => {
-    removeElement();
-  }
-
-  const removeSuccessKeydown = (successEvt) => {
-    isEscapeKey(successEvt);
-  }
-
-  const removeElement = () => {
+  function removeElement () {
     successClone.remove();
     document.removeEventListener('keydown', removeSuccessKeydown);
   }
 
-  successClone.addEventListener('click', removeSuccessClick);
+  function removeSuccessClick () {
+    removeElement();
+  }
 
+  function removeSuccessKeydown  (successEvt) {
+    if (successEvt.key === 'Escape') {
+      removeElement();
+    }
+    removeSuccessClick();
+  }
+
+  successClone.addEventListener('click', removeSuccessClick);
   document.addEventListener('keydown', removeSuccessKeydown);
   document.body.append(successClone);
 };
 
 const onError = () => {
   const errorClone = errorElement.cloneNode(true);
+
+  function removeElement () {
+    errorClone.remove();
+    document.removeEventListener('keydown', removeErrorKeydown);
+  }
 
   function removeErrorClick () {
     removeElement();
@@ -50,11 +51,6 @@ const onError = () => {
     if (successEvt.key === 'Escape') {
       removeErrorClick();
     }
-  }
-
-  function removeElement () {
-    errorClone.remove();
-    document.removeEventListener('keydown', removeErrorKeydown);
   }
 
   errorClone.addEventListener('click', removeErrorClick);

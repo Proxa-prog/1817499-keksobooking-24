@@ -10,26 +10,20 @@ avatarDowmloadElement.addEventListener('change', () => {
   const file = avatarDowmloadElement.files[0];
   const fileName = file.name.toLowerCase();
 
-  const matches = FILE_TYPES.some((item) => {
-    return fileName.endsWith(item);
-  });
-
+  const matches = FILE_TYPES.some((item) => fileName.endsWith(item));
   if (matches) {
     avatarPreviewElement.src = URL.createObjectURL(file);
   }
 });
 
-console.log(fotoPreviewElement);
 fotoDownloadElement.addEventListener('change', () => {
   const file = fotoDownloadElement.files[0];
   const fileName = file.name.toLowerCase();
 
-  const matches = FILE_TYPES.some((item) => {
-    return fileName.endsWith(item);
-  });
+  const matches = FILE_TYPES.some((item) => fileName.endsWith(item));
 
   if (matches) {
-    let img = document.createElement('img');
+    const img = document.createElement('img');
     img.src = URL.createObjectURL(file);
     img.style.height='200px';
     img.style.width='200px';

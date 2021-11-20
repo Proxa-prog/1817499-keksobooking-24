@@ -67,7 +67,9 @@ const getRatioOfGuestsChangeHandler = (evt) => {
       }
     }
   }
+  howManyRoomsElement.removeEventListener('change', getRatioOfGuestsChangeHandler);
 };
+
 
 const showHousingCostChangeHandler = (evt) => {
   const currentHouseType = evt.target.value;
@@ -94,6 +96,7 @@ const showHousingCostChangeHandler = (evt) => {
       pricePerNightElement.min = ONE_HUNDRED_THOUSAND_STRING;
       break;
   }
+  typeOfHousingElement.removeEventListener('change', showHousingCostChangeHandler);
 };
 
 const CheckInAndCheckOutTimeChangeHandler = (evt) => {
@@ -113,6 +116,8 @@ const CheckInAndCheckOutTimeChangeHandler = (evt) => {
       timeOutElement.value = FOURTEEN_HOURS;
       break;
   }
+  timeInElement.removeEventListener('change', CheckInAndCheckOutTimeChangeHandler);
+  timeOutElement.removeEventListener('change', CheckInAndCheckOutTimeChangeHandler);
 };
 
 
