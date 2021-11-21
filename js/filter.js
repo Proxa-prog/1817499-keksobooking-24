@@ -1,12 +1,18 @@
 import {renderAnnouncementList, markerGroup} from './map.js';
 import {debounce} from './utils/debounce.js';
-import {SIMILAR_ADD_COUNT, ANY_VALUE, PRICE_LOW_VALUE, PRICE_MIDDLE_VALUE, PRICE_HIGH_VALUE, PRICE_LOW_NUMBER, PRICE_HIGH_NUMBER} from './arrays-and-variables.js';
 
 const mapFiltersElement = document.querySelector('.map__filters');
 const housingTypeElement = mapFiltersElement.querySelector('#housing-type');
 const housingPriceElement = mapFiltersElement.querySelector('#housing-price');
 const housingRoomsElement = mapFiltersElement.querySelector('#housing-rooms');
 const housingGuestsElement = mapFiltersElement.querySelector('#housing-guests');
+const SIMILAR_ADD_COUNT = 10;
+const ANY_VALUE = 'any';
+const PRICE_LOW_VALUE = 'low';
+const PRICE_MIDDLE_VALUE = 'middle';
+const PRICE_HIGH_VALUE = 'high';
+const PRICE_LOW_NUMBER = 10000;
+const PRICE_HIGH_NUMBER = 50000;
 
 const getHouseType = (currentAdd) => currentAdd.offer.type === housingTypeElement.value || housingTypeElement.value === ANY_VALUE;
 
@@ -30,20 +36,24 @@ const getSelectFeatures = (currentAdd) => {
 };
 
 const getFilterValue = (offers) => {
-
   mapFiltersElement.addEventListener('change', debounce(() => {
     const filteredOffers = [];
     let count = 0;
-    offers.map((offer) => {
-      if (getHouseType(offer) && getHousePrice(offer) && getNumberOfRooms(offer) && getNumberOfGuests(offer) && getSelectFeatures(offer) && count < SIMILAR_ADD_COUNT) {
-        filteredOffers.push(offer);
+
+    while (filteredOffers.length < SIMILAR_ADD_COUNT || count < 49) {
+      if (filteredOffers.length === SIMILAR_ADD_COUNT) {
+        break;
+      }
+      if (getHouseType(offers[count]) && getHousePrice(offers[count]) && getNumberOfRooms(offers[count]) && getNumberOfGuests(offers[count]) && getSelectFeatures(offers[count])) {
+        filteredOffers.push(offers[count]);
+        count++;
+      } else {
         count++;
       }
-    });
-    markerGroup.clearLayers();
-    renderAnnouncementList(filteredOffers);
+      markerGroup.clearLayers();
+      renderAnnouncementList(filteredOffers);
+    }
   }));
-  mapFiltersElement.removeEventListener('change', debounce());
 };
 
 export {getFilterValue};

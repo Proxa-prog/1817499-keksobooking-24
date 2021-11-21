@@ -1,7 +1,6 @@
 import {onSuccess, onError} from './utils/utils.js';
 import {sendData} from './api.js';
 import {markerGet, addressElement, mapReset} from './map.js';
-import {ZERO_VALUE_STRING, HUNDRED_ROOMS, BUNGALOW, FLAT, HOTEL, HOUSE, PALACE, THOUSAND_STRING, THREE_THOUSAND_STRING, FIVE_THOUSAND_STRING, ONE_HUNDRED_THOUSAND_STRING, TWELVE_HOURS, THITTEEN_HOUSR, FOURTEEN_HOURS} from './arrays-and-variables.js';
 
 const formWindowElement = document.querySelector('.ad-form');
 const mapFiltersWindowElement = document.querySelector('.map__filters');
@@ -15,6 +14,20 @@ const pricePerNightElement = formWindowElement.querySelector('#price');
 const timeInElement = formWindowElement.querySelector('#timein');
 const timeOutElement = formWindowElement.querySelector('#timeout');
 const resetElement = document.querySelector('.ad-form__reset');
+const ZERO_VALUE_STRING = '0';
+const HUNDRED_ROOMS = '100';
+const BUNGALOW = 'bungalow';
+const FLAT = 'flat';
+const HOTEL = 'hotel';
+const HOUSE = 'house';
+const PALACE = 'palace';
+const THOUSAND_STRING = '1000';
+const THREE_THOUSAND_STRING = '3000';
+const FIVE_THOUSAND_STRING = '5000';
+const ONE_HUNDRED_THOUSAND_STRING = '100000';
+const TWELVE_HOURS = '12:00';
+const THITTEEN_HOUSR = '13:00';
+const FOURTEEN_HOURS = '14:00';
 
 
 const startFormActivation = () => {
