@@ -22,7 +22,8 @@ const fieldsetsElement = formWindowElement.querySelectorAll('fieldset');
 const selectElements = mapFiltersWindowElement.querySelectorAll('select');
 const mapFiltersFieldsetElement = mapFiltersWindowElement.querySelector('fieldset');
 const howManyRoomsElement = formWindowElement.querySelector('#room_number');
-const howManyGuestsElement = formWindowElement.querySelector('#capacity').querySelectorAll('option');
+const capacityElement =  formWindowElement.querySelector('#capacity');
+const howManyGuestsElement = capacityElement.querySelectorAll('option');
 const typeOfHousingElement = formWindowElement.querySelector('#type');
 const pricePerNightElement = formWindowElement.querySelector('#price');
 const timeInElement = formWindowElement.querySelector('#timein');
@@ -81,6 +82,18 @@ const getRatioOfGuestsChangeHandler = (evt) => {
   }
 };
 
+const runGetRatioOfGuests = () => {
+  capacityElement.value = howManyRoomsElement.value;
+  for(let i = 0; i < howManyGuestsElement.length; i++) {
+    if(capacityElement.value === howManyGuestsElement[i].value || howManyGuestsElement[i].value < capacityElement.value && howManyGuestsElement[i].value !== ZERO_VALUE_STRING) {
+      howManyGuestsElement[i].disabled = false;
+    } else {
+      howManyGuestsElement[i].disabled = true;
+    }
+  }
+};
+
+runGetRatioOfGuests();
 
 const showHousingCostChangeHandler = (evt) => {
   const currentHouseType = evt.target.value;
@@ -135,6 +148,7 @@ const formReset = () => {
   addressElement.value = `${markerGet.lat} ${markerGet.lng}`;
   pricePerNightElement.placeholder = THOUSAND_STRING;
   pricePerNightElement.min = THOUSAND_STRING;
+  runGetRatioOfGuests();
 };
 
 

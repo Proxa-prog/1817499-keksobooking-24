@@ -44,6 +44,12 @@ const getFilterValue = (offers) => {
     while (count < offers.length) {
       if (getHouseType(offers[count]) && getHousePrice(offers[count]) && getNumberOfRooms(offers[count]) && getNumberOfGuests(offers[count]) && getSelectFeatures(offers[count])) {
         filteredOffers.push(offers[count]);
+
+        if (filteredOffers.length === SIMILAR_ADD_COUNT) {
+          markerGroup.clearLayers();
+          renderAnnouncementList(filteredOffers);
+          break;
+        }
         count++;
       } else {
         count++;
@@ -51,10 +57,6 @@ const getFilterValue = (offers) => {
 
       markerGroup.clearLayers();
       renderAnnouncementList(filteredOffers);
-
-      if (filteredOffers.length === SIMILAR_ADD_COUNT) {
-        break;
-      }
     }
   }));
 };
