@@ -2,6 +2,8 @@ import {createNewAnnouncementElement} from './similar-arannouncement.js';
 import {startFormActivation} from './form.js';
 import {getData, currentData} from './api.js';
 
+const LAT = 35.68405;
+const LNG = 139.75312;
 const addressElement = document.querySelector('#address');
 
 const map = L.map('map-canvas')
@@ -10,8 +12,8 @@ const map = L.map('map-canvas')
     startFormActivation();
   })
   .setView({
-    lat: 35.68405,
-    lng: 139.75312,
+    lat: LAT,
+    lng: LNG,
   }, 10);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -26,8 +28,8 @@ const mainPinIcon = L.icon({
 
 const marker = L.marker(
   {
-    lat: 35.68405,
-    lng: 139.75312,
+    lat: LAT,
+    lng: LNG,
   },
 
   {
@@ -71,14 +73,14 @@ const renderAnnouncementList = (elements) => {
 const mapReset = () => {
   marker.setLatLng(
     {
-      lat: 35.68405,
-      lng: 139.75312,
+      lat: LAT,
+      lng: LNG,
     });
 
   map
     .setView({
-      lat: 35.68405,
-      lng: 139.75312,
+      lat: LAT,
+      lng: LNG,
     }, 10);
 
   markerGroup.clearLayers();

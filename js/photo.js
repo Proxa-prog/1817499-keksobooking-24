@@ -3,8 +3,8 @@ import {FILE_TYPES} from './arrays-and-variables.js';
 
 const avatarPreviewElement = formWindowElement.querySelector('.ad-form-header__preview').querySelector('img');
 const avatarDowmloadElement = formWindowElement.querySelector('.ad-form__field').querySelector('#avatar');
-const fotoDownloadElement = formWindowElement.querySelector('.ad-form__upload').querySelector('#images');
-const fotoPreviewElement = formWindowElement.querySelector('.ad-form__photo-container').querySelector('.ad-form__photo');
+const photoDownloadElement = formWindowElement.querySelector('.ad-form__upload').querySelector('#images');
+const photoPreviewElement = formWindowElement.querySelector('.ad-form__photo-container').querySelector('.ad-form__photo');
 
 avatarDowmloadElement.addEventListener('change', () => {
   const file = avatarDowmloadElement.files[0];
@@ -16,8 +16,8 @@ avatarDowmloadElement.addEventListener('change', () => {
   }
 });
 
-fotoDownloadElement.addEventListener('change', () => {
-  const file = fotoDownloadElement.files[0];
+photoDownloadElement.addEventListener('change', () => {
+  const file = photoDownloadElement.files[0];
   const fileName = file.name.toLowerCase();
 
   const matches = FILE_TYPES.some((item) => fileName.endsWith(item));
@@ -27,6 +27,6 @@ fotoDownloadElement.addEventListener('change', () => {
     img.src = URL.createObjectURL(file);
     img.style.height='200px';
     img.style.width='200px';
-    fotoPreviewElement.appendChild(img);
+    photoPreviewElement.appendChild(img);
   }
 });

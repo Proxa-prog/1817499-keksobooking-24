@@ -2,18 +2,6 @@ import {onSuccess, onError} from './utils/utils.js';
 import {sendData} from './api.js';
 import {markerGet, addressElement, mapReset} from './map.js';
 
-const formWindowElement = document.querySelector('.ad-form');
-const mapFiltersWindowElement = document.querySelector('.map__filters');
-const fieldsetsElement = formWindowElement.querySelectorAll('fieldset');
-const selectsElement = mapFiltersWindowElement.querySelectorAll('select');
-const mapFiltersFieldsetElement = mapFiltersWindowElement.querySelector('fieldset');
-const howManyRoomsElement = formWindowElement.querySelector('#room_number');
-const howManyGuestsElement = formWindowElement.querySelector('#capacity').querySelectorAll('option');
-const typeOfHousingElement = formWindowElement.querySelector('#type');
-const pricePerNightElement = formWindowElement.querySelector('#price');
-const timeInElement = formWindowElement.querySelector('#timein');
-const timeOutElement = formWindowElement.querySelector('#timeout');
-const resetElement = document.querySelector('.ad-form__reset');
 const ZERO_VALUE_STRING = '0';
 const HUNDRED_ROOMS = '100';
 const BUNGALOW = 'bungalow';
@@ -28,7 +16,18 @@ const ONE_HUNDRED_THOUSAND_STRING = '100000';
 const TWELVE_HOURS = '12:00';
 const THITTEEN_HOUSR = '13:00';
 const FOURTEEN_HOURS = '14:00';
-
+const formWindowElement = document.querySelector('.ad-form');
+const mapFiltersWindowElement = document.querySelector('.map__filters');
+const fieldsetsElement = formWindowElement.querySelectorAll('fieldset');
+const selectElements = mapFiltersWindowElement.querySelectorAll('select');
+const mapFiltersFieldsetElement = mapFiltersWindowElement.querySelector('fieldset');
+const howManyRoomsElement = formWindowElement.querySelector('#room_number');
+const howManyGuestsElement = formWindowElement.querySelector('#capacity').querySelectorAll('option');
+const typeOfHousingElement = formWindowElement.querySelector('#type');
+const pricePerNightElement = formWindowElement.querySelector('#price');
+const timeInElement = formWindowElement.querySelector('#timein');
+const timeOutElement = formWindowElement.querySelector('#timeout');
+const resetElement = document.querySelector('.ad-form__reset');
 
 const startFormActivation = () => {
   formWindowElement.classList.remove('ad-form--disabled');
@@ -38,8 +37,8 @@ const startFormActivation = () => {
     fieldsetsElement[i].disabled = false;
   }
 
-  for(let i = 0; i < selectsElement.length; i++) {
-    selectsElement[i].disabled = false;
+  for(let i = 0; i < selectElements.length; i++) {
+    selectElements[i].disabled = false;
   }
 
   mapFiltersFieldsetElement.disabled = false;
@@ -53,8 +52,8 @@ const startFormDeactivation = () => {
     fieldsetsElement[i].disabled = true;
   }
 
-  for(let i = 0; i < selectsElement.length; i++) {
-    selectsElement[i].disabled = true;
+  for(let i = 0; i < selectElements.length; i++) {
+    selectElements[i].disabled = true;
   }
 
   mapFiltersFieldsetElement.disabled = true;
@@ -80,7 +79,6 @@ const getRatioOfGuestsChangeHandler = (evt) => {
       }
     }
   }
-  howManyRoomsElement.removeEventListener('change', getRatioOfGuestsChangeHandler);
 };
 
 
@@ -109,7 +107,6 @@ const showHousingCostChangeHandler = (evt) => {
       pricePerNightElement.min = ONE_HUNDRED_THOUSAND_STRING;
       break;
   }
-  typeOfHousingElement.removeEventListener('change', showHousingCostChangeHandler);
 };
 
 const CheckInAndCheckOutTimeChangeHandler = (evt) => {
@@ -129,8 +126,6 @@ const CheckInAndCheckOutTimeChangeHandler = (evt) => {
       timeOutElement.value = FOURTEEN_HOURS;
       break;
   }
-  timeInElement.removeEventListener('change', CheckInAndCheckOutTimeChangeHandler);
-  timeOutElement.removeEventListener('change', CheckInAndCheckOutTimeChangeHandler);
 };
 
 

@@ -1,11 +1,6 @@
 import {renderAnnouncementList, markerGroup} from './map.js';
 import {debounce} from './utils/debounce.js';
 
-const mapFiltersElement = document.querySelector('.map__filters');
-const housingTypeElement = mapFiltersElement.querySelector('#housing-type');
-const housingPriceElement = mapFiltersElement.querySelector('#housing-price');
-const housingRoomsElement = mapFiltersElement.querySelector('#housing-rooms');
-const housingGuestsElement = mapFiltersElement.querySelector('#housing-guests');
 const SIMILAR_ADD_COUNT = 10;
 const ANY_VALUE = 'any';
 const PRICE_LOW_VALUE = 'low';
@@ -13,6 +8,12 @@ const PRICE_MIDDLE_VALUE = 'middle';
 const PRICE_HIGH_VALUE = 'high';
 const PRICE_LOW_NUMBER = 10000;
 const PRICE_HIGH_NUMBER = 50000;
+const mapFiltersElement = document.querySelector('.map__filters');
+const housingTypeElement = mapFiltersElement.querySelector('#housing-type');
+const housingPriceElement = mapFiltersElement.querySelector('#housing-price');
+const housingRoomsElement = mapFiltersElement.querySelector('#housing-rooms');
+const housingGuestsElement = mapFiltersElement.querySelector('#housing-guests');
+
 
 const getHouseType = (currentAdd) => currentAdd.offer.type === housingTypeElement.value || housingTypeElement.value === ANY_VALUE;
 
@@ -40,18 +41,20 @@ const getFilterValue = (offers) => {
     const filteredOffers = [];
     let count = 0;
 
-    while (filteredOffers.length < SIMILAR_ADD_COUNT || count < 49) {
-      if (filteredOffers.length === SIMILAR_ADD_COUNT) {
-        break;
-      }
+    while (count < offers.length) {
       if (getHouseType(offers[count]) && getHousePrice(offers[count]) && getNumberOfRooms(offers[count]) && getNumberOfGuests(offers[count]) && getSelectFeatures(offers[count])) {
         filteredOffers.push(offers[count]);
         count++;
       } else {
         count++;
       }
+
       markerGroup.clearLayers();
       renderAnnouncementList(filteredOffers);
+
+      if (filteredOffers.length === SIMILAR_ADD_COUNT) {
+        break;
+      }
     }
   }));
 };
