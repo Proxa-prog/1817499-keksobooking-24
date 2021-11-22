@@ -46,8 +46,6 @@ const getFilterValue = (offers) => {
         filteredOffers.push(offers[count]);
 
         if (filteredOffers.length === SIMILAR_ADD_COUNT) {
-          markerGroup.clearLayers();
-          renderAnnouncementList(filteredOffers);
           break;
         }
         count++;
