@@ -54,10 +54,10 @@ const getFilterValue = (offers) => {
       } else {
         count++;
       }
-
-      markerGroup.clearLayers();
-      renderAnnouncementList(filteredOffers);
     }
+
+    markerGroup.clearLayers();
+    renderAnnouncementList(filteredOffers);
   }));
 };
 
