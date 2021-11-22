@@ -1,135 +1,159 @@
 import {onSuccess, onError} from './utils/utils.js';
 import {sendData} from './api.js';
-import {markerGet, address, mapReset} from './map.js';
+import {markerGet, addressElement, mapReset} from './map.js';
 
-const formWindow = document.querySelector('.ad-form');
-const mapFiltersWindow = document.querySelector('.map__filters');
-const formFieldset = formWindow.querySelectorAll('fieldset');
-const mapFiltersSelect = mapFiltersWindow.querySelectorAll('select');
-const mapFiltersFieldset = mapFiltersWindow.querySelector('fieldset');
-const howManyRooms = formWindow.querySelector('#room_number');
-const howManyGuests = formWindow.querySelector('#capacity').querySelectorAll('option');
-const typeOfHousing = formWindow.querySelector('#type');
-const pricePerNight = formWindow.querySelector('#price');
-const timeIn = formWindow.querySelector('#timein');
-const timeOut = formWindow.querySelector('#timeout');
-const reset = document.querySelector('.ad-form__reset');
+const ZERO_VALUE_STRING = '0';
+const HUNDRED_ROOMS = '100';
+const BUNGALOW = 'bungalow';
+const FLAT = 'flat';
+const HOTEL = 'hotel';
+const HOUSE = 'house';
+const PALACE = 'palace';
+const THOUSAND_STRING = '1000';
+const THREE_THOUSAND_STRING = '3000';
+const FIVE_THOUSAND_STRING = '5000';
+const ONE_HUNDRED_THOUSAND_STRING = '100000';
+const TWELVE_HOURS = '12:00';
+const THITTEEN_HOUSR = '13:00';
+const FOURTEEN_HOURS = '14:00';
+const formWindowElement = document.querySelector('.ad-form');
+const mapFiltersWindowElement = document.querySelector('.map__filters');
+const fieldsetsElement = formWindowElement.querySelectorAll('fieldset');
+const selectElements = mapFiltersWindowElement.querySelectorAll('select');
+const mapFiltersFieldsetElement = mapFiltersWindowElement.querySelector('fieldset');
+const howManyRoomsElement = formWindowElement.querySelector('#room_number');
+const capacityElement =  formWindowElement.querySelector('#capacity');
+const howManyGuestsElement = capacityElement.querySelectorAll('option');
+const typeOfHousingElement = formWindowElement.querySelector('#type');
+const pricePerNightElement = formWindowElement.querySelector('#price');
+const timeInElement = formWindowElement.querySelector('#timein');
+const timeOutElement = formWindowElement.querySelector('#timeout');
+const resetElement = document.querySelector('.ad-form__reset');
 
+const startFormActivation = () => {
+  formWindowElement.classList.remove('ad-form--disabled');
+  mapFiltersWindowElement.classList.remove('map__filters--disabled');
 
-const formActivation = () => {
-  formWindow.classList.remove('ad-form--disabled');
-  mapFiltersWindow.classList.remove('map__filters--disabled');
-
-  for(let i = 0; i < formFieldset.length; i++) {
-    formFieldset[i].disabled = false;
+  for(let i = 0; i < fieldsetsElement.length; i++) {
+    fieldsetsElement[i].disabled = false;
   }
 
-  for(let i = 0; i < mapFiltersSelect.length; i++) {
-    mapFiltersSelect[i].disabled = false;
+  for(let i = 0; i < selectElements.length; i++) {
+    selectElements[i].disabled = false;
   }
 
-  mapFiltersFieldset.disabled = false;
+  mapFiltersFieldsetElement.disabled = false;
 };
 
-const formDeactivation = () => {
-  formWindow.classList.add('ad-form--disabled');
-  mapFiltersWindow.classList.add('map__filters--disabled');
+const startFormDeactivation = () => {
+  formWindowElement.classList.add('ad-form--disabled');
+  mapFiltersWindowElement.classList.add('map__filters--disabled');
 
-  for(let i = 0; i < formFieldset.length; i++) {
-    formFieldset[i].disabled = true;
+  for(let i = 0; i < fieldsetsElement.length; i++) {
+    fieldsetsElement[i].disabled = true;
   }
 
-  for(let i = 0; i < mapFiltersSelect.length; i++) {
-    mapFiltersSelect[i].disabled = true;
+  for(let i = 0; i < selectElements.length; i++) {
+    selectElements[i].disabled = true;
   }
 
-  mapFiltersFieldset.disabled = true;
+  mapFiltersFieldsetElement.disabled = true;
 };
 
-formDeactivation();
+startFormDeactivation();
 
-const getRatioOfGuests = (evt) => {
+const getRatioOfGuestsChangeHandler = (evt) => {
   const currentValue = evt.target.value;
-  for(let i = 0; i < howManyGuests.length; i++) {
-    if(currentValue === howManyGuests[i].value || howManyGuests[i].value < currentValue && howManyGuests[i].value !== '0') {
-      howManyGuests[i].disabled = false;
+  for(let i = 0; i < howManyGuestsElement.length; i++) {
+    if(currentValue === howManyGuestsElement[i].value || howManyGuestsElement[i].value < currentValue && howManyGuestsElement[i].value !== ZERO_VALUE_STRING) {
+      howManyGuestsElement[i].disabled = false;
     } else {
-      howManyGuests[i].disabled = true;
+      howManyGuestsElement[i].disabled = true;
     }
   }
 
-  if (currentValue === '100') {
-    for(let j = 0; j < howManyGuests.length; j++) {
-      howManyGuests[j].disabled = true;
-      if (howManyGuests[j].value === '0') {
-        howManyGuests[j].disabled = false;
+  if (currentValue === HUNDRED_ROOMS) {
+    for(let j = 0; j < howManyGuestsElement.length; j++) {
+      howManyGuestsElement[j].disabled = true;
+      if (howManyGuestsElement[j].value === ZERO_VALUE_STRING) {
+        howManyGuestsElement[j].disabled = false;
       }
     }
   }
-  howManyRooms.removeEventListener('change', getRatioOfGuests);
 };
 
-const showHousingCost = (evt) => {
+const runGetRatioOfGuests = () => {
+  capacityElement.value = howManyRoomsElement.value;
+  for(let i = 0; i < howManyGuestsElement.length; i++) {
+    if(capacityElement.value === howManyGuestsElement[i].value || howManyGuestsElement[i].value < capacityElement.value && howManyGuestsElement[i].value !== ZERO_VALUE_STRING) {
+      howManyGuestsElement[i].disabled = false;
+    } else {
+      howManyGuestsElement[i].disabled = true;
+    }
+  }
+};
+
+runGetRatioOfGuests();
+
+const showHousingCostChangeHandler = (evt) => {
   const currentHouseType = evt.target.value;
 
   switch(currentHouseType) {
-    case 'bungalow':
-      pricePerNight.placeholder = '0';
-      pricePerNight.min = '0';
+    case BUNGALOW:
+      pricePerNightElement.placeholder =ZERO_VALUE_STRING;
+      pricePerNightElement.min = ZERO_VALUE_STRING;
       break;
-    case 'flat':
-      pricePerNight.placeholder = '1000';
-      pricePerNight.min = '1000';
+    case FLAT:
+      pricePerNightElement.placeholder = THOUSAND_STRING;
+      pricePerNightElement.min = THOUSAND_STRING;
       break;
-    case 'hotel':
-      pricePerNight.placeholder = '3000';
-      pricePerNight.min = '3000';
+    case HOTEL:
+      pricePerNightElement.placeholder = THREE_THOUSAND_STRING;
+      pricePerNightElement.min = THREE_THOUSAND_STRING;
       break;
-    case 'house':
-      pricePerNight.placeholder = '5000';
-      pricePerNight.min = '5000';
+    case HOUSE:
+      pricePerNightElement.placeholder = FIVE_THOUSAND_STRING;
+      pricePerNightElement.min = FIVE_THOUSAND_STRING;
       break;
-    case 'palace':
-      pricePerNight.placeholder = '100000';
-      pricePerNight.min = '100000';
+    case PALACE:
+      pricePerNightElement.placeholder = ONE_HUNDRED_THOUSAND_STRING;
+      pricePerNightElement.min = ONE_HUNDRED_THOUSAND_STRING;
       break;
   }
-
-  typeOfHousing.removeEventListener('change', showHousingCost);
 };
 
-const onCheckInAndCheckOutTime = (evt) => {
+const CheckInAndCheckOutTimeChangeHandler = (evt) => {
   const checkTime = evt.target.value;
 
   switch(checkTime) {
-    case '12:00':
-      timeIn.value = '12:00';
-      timeOut.value = '12:00';
+    case TWELVE_HOURS:
+      timeInElement.value = TWELVE_HOURS;
+      timeOutElement.value = TWELVE_HOURS;
       break;
-    case '13:00':
-      timeIn.value = '13:00';
-      timeOut.value = '13:00';
+    case THITTEEN_HOUSR:
+      timeInElement.value = THITTEEN_HOUSR;
+      timeOutElement.value = THITTEEN_HOUSR;
       break;
-    case '14:00':
-      timeIn.value = '14:00';
-      timeOut.value = '14:00';
+    case FOURTEEN_HOURS:
+      timeInElement.value = FOURTEEN_HOURS;
+      timeOutElement.value = FOURTEEN_HOURS;
       break;
   }
-
-  timeIn.removeEventListener('change', onCheckInAndCheckOutTime);
-  timeOut.removeEventListener('change', onCheckInAndCheckOutTime);
 };
 
 
 const formReset = () => {
-  formWindow.reset();
-  mapFiltersWindow.reset();
-  address.value = `${markerGet.lat} ${markerGet.lng}`;
+  formWindowElement.reset();
+  mapFiltersWindowElement.reset();
+  addressElement.value = `${markerGet.lat} ${markerGet.lng}`;
+  pricePerNightElement.placeholder = THOUSAND_STRING;
+  pricePerNightElement.min = THOUSAND_STRING;
+  runGetRatioOfGuests();
 };
 
 
 const setUserFormSubmit = () => {
-  formWindow.addEventListener('submit', (evt) => {
+  formWindowElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     sendData(
@@ -143,18 +167,18 @@ const setUserFormSubmit = () => {
 };
 
 
-reset.addEventListener('click', (evt) => {
+resetElement.addEventListener('click', (evt) => {
   evt.preventDefault();
 
   formReset();
   mapReset();
 
-  address.value = `${markerGet.lat} ${markerGet.lng}`;
+  addressElement.value = `${markerGet.lat} ${markerGet.lng}`;
 });
 
-howManyRooms.addEventListener('change', getRatioOfGuests);
-typeOfHousing.addEventListener('change', showHousingCost);
-timeIn.addEventListener('change', onCheckInAndCheckOutTime);
-timeOut.addEventListener('change', onCheckInAndCheckOutTime);
+howManyRoomsElement.addEventListener('change', getRatioOfGuestsChangeHandler);
+typeOfHousingElement.addEventListener('change', showHousingCostChangeHandler);
+timeInElement.addEventListener('change', CheckInAndCheckOutTimeChangeHandler);
+timeOutElement.addEventListener('change', CheckInAndCheckOutTimeChangeHandler);
 
-export {formActivation, formWindow, setUserFormSubmit, formReset, mapFiltersWindow};
+export {startFormActivation, setUserFormSubmit, formReset, formWindowElement};

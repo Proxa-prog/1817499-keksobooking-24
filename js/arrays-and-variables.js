@@ -6,4 +6,11 @@ const TYPES_OF_HOUSING_RUS = [
   {hotel: 'Отель'},
 ];
 
-export {TYPES_OF_HOUSING_RUS};
+const FILE_TYPES = [
+  'gif',
+  'jpg',
+  'jpeg',
+  'png',
+];
+
+export {TYPES_OF_HOUSING_RUS, FILE_TYPES};

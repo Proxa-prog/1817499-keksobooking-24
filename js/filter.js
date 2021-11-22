@@ -1,26 +1,33 @@
-import {renderAnnouncementList} from './map.js';
-import {markerGroup} from './map.js';
+import {renderAnnouncementList, markerGroup} from './map.js';
 import {debounce} from './utils/debounce.js';
 
 const SIMILAR_ADD_COUNT = 10;
-const housingType = document.querySelector('.map__filters').querySelector('#housing-type');
-const housingPrice = document.querySelector('.map__filters').querySelector('#housing-price');
-const housingRooms = document.querySelector('.map__filters').querySelector('#housing-rooms');
-const housingGuests = document.querySelector('.map__filters').querySelector('#housing-guests');
+const ANY_VALUE = 'any';
+const PRICE_LOW_VALUE = 'low';
+const PRICE_MIDDLE_VALUE = 'middle';
+const PRICE_HIGH_VALUE = 'high';
+const PRICE_LOW_NUMBER = 10000;
+const PRICE_HIGH_NUMBER = 50000;
+const mapFiltersElement = document.querySelector('.map__filters');
+const housingTypeElement = mapFiltersElement.querySelector('#housing-type');
+const housingPriceElement = mapFiltersElement.querySelector('#housing-price');
+const housingRoomsElement = mapFiltersElement.querySelector('#housing-rooms');
+const housingGuestsElement = mapFiltersElement.querySelector('#housing-guests');
 
-const getHouseType = (currentAdd) => currentAdd.offer.type === housingType.value || housingType.value === 'any';
 
-const getHousePrice = (currentAdd) => housingPrice.value === 'any'
-  || currentAdd.offer.price < 10000 && housingPrice.value === 'low'
-  || currentAdd.offer.price >= 10000 && currentAdd.offer.price < 50000 && housingPrice.value === 'middle'
-  || currentAdd.offer.price > 50000 && housingPrice.value === 'high';
+const getHouseType = (currentAdd) => currentAdd.offer.type === housingTypeElement.value || housingTypeElement.value === ANY_VALUE;
 
-const getNumberOfRooms = (currentAdd) => currentAdd.offer.rooms === Number(housingRooms.value) || housingRooms.value === 'any';
+const getHousePrice = (currentAdd) => housingPriceElement.value === ANY_VALUE
+  || currentAdd.offer.price < PRICE_LOW_NUMBER && housingPriceElement.value === PRICE_LOW_VALUE
+  || currentAdd.offer.price >= PRICE_LOW_NUMBER && currentAdd.offer.price < PRICE_HIGH_NUMBER && housingPriceElement.value === PRICE_MIDDLE_VALUE
+  || currentAdd.offer.price > PRICE_HIGH_NUMBER && housingPriceElement.value === PRICE_HIGH_VALUE;
 
-const getNumberOfGuests = (currentAdd) => currentAdd.offer.guests === Number(housingGuests.value) || housingGuests.value === 'any';
+const getNumberOfRooms = (currentAdd) => currentAdd.offer.rooms === Number(housingRoomsElement.value) || housingRoomsElement.value === ANY_VALUE;
+
+const getNumberOfGuests = (currentAdd) => currentAdd.offer.guests === Number(housingGuestsElement.value) || housingGuestsElement.value === ANY_VALUE;
 
 const getSelectFeatures = (currentAdd) => {
-  const housingFeatures = document.querySelector('.map__filters').querySelectorAll('.map__checkbox:checked');
+  const housingFeatures = mapFiltersElement.querySelectorAll('.map__checkbox:checked');
   const featuresValue = [...housingFeatures].map((item) => item.value);
 
   if (!currentAdd.offer.features) {
@@ -30,14 +37,26 @@ const getSelectFeatures = (currentAdd) => {
 };
 
 const getFilterValue = (offers) => {
-  document.querySelector('.map__filters').addEventListener('change', debounce(() => {
-    const filteredOffers = offers.filter((offer) => getHouseType(offer) && getHousePrice(offer) && getNumberOfRooms(offer) && getNumberOfGuests(offer) && getSelectFeatures(offer));
-    markerGroup.clearLayers();
-    renderAnnouncementList(filteredOffers.slice(0, SIMILAR_ADD_COUNT));
-  },
-  ));
+  mapFiltersElement.addEventListener('change', debounce(() => {
+    const filteredOffers = [];
+    let count = 0;
 
-  document.querySelector('.map__filters').removeEventListener('change', debounce());
+    while (count < offers.length) {
+      if (getHouseType(offers[count]) && getHousePrice(offers[count]) && getNumberOfRooms(offers[count]) && getNumberOfGuests(offers[count]) && getSelectFeatures(offers[count])) {
+        filteredOffers.push(offers[count]);
+
+        if (filteredOffers.length === SIMILAR_ADD_COUNT) {
+          break;
+        }
+        count++;
+      } else {
+        count++;
+      }
+    }
+
+    markerGroup.clearLayers();
+    renderAnnouncementList(filteredOffers);
+  }));
 };
 
 export {getFilterValue};
